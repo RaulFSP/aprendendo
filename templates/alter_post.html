@@ -1,0 +1,24 @@
+{%extends "base.html"%}
+
+{%block head%} 
+<title>Alter Post</title>
+{%endblock%}
+
+{%block body%} 
+<form action="{{url_for('alter_post',id=post.id)}}" method="post" class="container">
+    <fieldset class="d-flex flex-column gap-2 shadow-sm p-3 mb-5 bg-body-tertiary rounded">
+        {{form.hidden_tag()}}
+        
+        {{form.title.label}}
+        {{form.title(value=post.title)}}
+        {{form.author.label}}
+        {{form.author(value=post.author)}}
+        {{form.slug.label}}
+        {{form.slug(value=post.author)}}
+        {{form.content.label}}
+        {{form.content(placeholder=post.content, rows="10", style="resize: none;")}}
+        {{form.submit(value="Postar", class="btn btn-warning")}}
+    </fieldset>
+</form>
+
+{%endblock%}

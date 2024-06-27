@@ -1,7 +1,7 @@
 from app import app,db
 from flask import render_template, redirect, url_for, flash
-from models import UserModel
-from forms import UserForm
+from models import UserModel, UserPostModel
+from forms import UserForm, LoginForm, UserPostForm
 from werkzeug.security import generate_password_hash, check_password_hash
 
 @property
@@ -17,7 +17,9 @@ def verify_password(self,password):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    
+    posts = UserPostModel.query.all()
+    return render_template('index.html',posts=posts)
 
 @app.route('/add_user',methods=['POST','GET'])
 def add_user():
@@ -50,3 +52,50 @@ def alter_user(id):
         return redirect(url_for('add_user'))
     else:
         return render_template('alter_user.html',form=form, user=user)
+
+@app.route('/login',methods=['POST','GET'])
+def login_user():
+    form = LoginForm()
+    user = None
+    check = None
+    if form.validate_on_submit():
+        email = form.email.data
+        password = form.password.data
+        form = LoginForm(formdata=None)
+        user = UserModel.query.filter_by(email=email).first_or_404()
+        check = check_password_hash(user.password_hash,password)
+    return render_template('login.html',form=form, user=user, check = check)
+
+@app.route('/add_post',methods=['POST','GET'])
+def add_post():
+    form = UserPostForm()
+    if form.validate_on_submit():
+        post = UserPostModel(
+            title=form.title.data,
+            author=form.author.data,
+            slug = form.slug.data,
+            content = form.content.data
+        )
+        form = UserPostForm(formdata=None)
+        db.session.add(post)
+        db.session.commit()
+        flash("Post adicionado!")
+        return redirect(url_for('add_post'))
+    else:
+        return render_template('user_post.html',form=form)
+
+@app.route('/post/<int:id>',methods=['POST','GET'])
+def alter_post(id):
+    form = UserPostForm()
+    post = UserPostModel.query.get_or_404(id)
+    if form.validate_on_submit():
+        post.title = form.title.data
+        post.author = form.author.data
+        post.slug = form.slug.data
+        post.content = form.content.data
+        form = UserPostForm(formdata=None)
+        db.session.commit()
+        flash('Post Alterado!')
+        return redirect(url_for('index'))
+    else:
+        return render_template('alter_post.html',form=form, post=post)
