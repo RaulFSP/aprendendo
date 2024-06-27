@@ -1,10 +1,13 @@
 from app import db
 from sqlalchemy import Text, String, Integer, DateTime
 from sqlalchemy.orm import mapped_column
+from flask_login import UserMixin
 from datetime import datetime
-class UserModel(db.Model):
+
+class UserModel(db.Model, UserMixin):
     id = mapped_column(Integer,autoincrement=True,primary_key=True)
     name = mapped_column(String(100), nullable=False)
+    username = mapped_column(String(30), nullable=False,unique=True)
     email = mapped_column(String(60), nullable=False, unique=True)
     password_hash = mapped_column(String(128), nullable=False)
 

@@ -8,9 +8,11 @@
 <br>
 <form action="{{url_for('add_user')}}" method="post" class="container">
     <fieldset class="d-flex flex-column gap-2 shadow-sm p-3 mb-5 bg-body-tertiary rounded">
-        {{form.hidden_tag()}}
+        {{ form.csrf_token }}
         {{form.name.label}}
         {{form.name}}
+        {{form.username.label}}
+        {{form.username}}
         {{form.email.label}}
         {{form.email}}
         {{form.password.label}}
@@ -30,6 +32,7 @@
         <tr>
             <th>ID</th>
             <th>Nome</th>
+            <th>Username</th>
             <th>Email</th>
         </tr>
     </thead>
@@ -38,6 +41,7 @@
         <tr>
             <td>{{user.id}}</td>
             <td><a href="{{url_for('alter_user',id=user.id)}}">{{user.name}}</a></td>
+            <td>{{user.username}}</td>
             <td>{{user.email}}</td>
         </tr>
         {%endfor%}

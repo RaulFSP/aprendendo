@@ -4,19 +4,22 @@
 <title>Alter Post</title>
 {%endblock%}
 
-{%block body%} 
-<form action="{{url_for('alter_post',id=post.id)}}" method="post" class="container">
-    <fieldset class="d-flex flex-column gap-2 shadow-sm p-3 mb-5 bg-body-tertiary rounded">
-        {{form.hidden_tag()}}
+{%block body%}
+    <div class="container text-center p-3">
+        <a href="{{url_for('delete_post',id=post.id)}}" class="btn btn-danger">Deletar Post</a> 
+    </div>
+<form action="{{url_for('alter_post',id=post.id)}}" method="post" class="container shadow-sm p-3 mb-5 bg-body-tertiary rounded">
+    <fieldset class="d-flex flex-column gap-2">
+        {{ form.csrf_token }}
         
         {{form.title.label}}
-        {{form.title(value=post.title)}}
+        {{form.title()}}
         {{form.author.label}}
-        {{form.author(value=post.author)}}
+        {{form.author()}}
         {{form.slug.label}}
-        {{form.slug(value=post.author)}}
+        {{form.slug()}}
         {{form.content.label}}
-        {{form.content(placeholder=post.content, rows="10", style="resize: none;")}}
+        {{form.content(rows="10", style="resize: none;")}}
         {{form.submit(value="Postar", class="btn btn-warning")}}
     </fieldset>
 </form>

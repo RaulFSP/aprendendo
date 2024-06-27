@@ -7,17 +7,17 @@
 {%block body%} 
 <form action="{{url_for('login_user')}}" method="post" class="container">
     <fieldset class="d-flex flex-column gap-2 shadow-sm p-3 mb-5 bg-body-tertiary rounded">
-        {{form.hidden_tag()}}
+        {{ form.csrf_token }}
         
-        {{form.email.label}}
-        {{form.email()}}
+        {{form.username.label}}
+        {{form.username()}}
         {{form.password.label}}
         {{form.password()}}
         {{form.submit(value="Logar", class="btn btn-warning")}}
     </fieldset>
 </form>
 {%if user is not none%}
-<p>{{user.email}}</p>
+<p>{{user.username}}</p>
 <p>As senha batem: {{check}}</p>
 {%endif%}
 {%endblock%}

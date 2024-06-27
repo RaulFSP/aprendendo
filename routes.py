@@ -1,8 +1,13 @@
-from app import app,db
+from app import app,db, login_manager
 from flask import render_template, redirect, url_for, flash
 from models import UserModel, UserPostModel
 from forms import UserForm, LoginForm, UserPostForm
 from werkzeug.security import generate_password_hash, check_password_hash
+
+
+
+login_manager.login_view = "login_user"
+@login_manager.user_loader
 
 @property
 def password(self):
@@ -28,6 +33,7 @@ def add_user():
         user = UserModel(
             name = form.name.data,
             email = form.email.data,
+            username = form.username.data,
             password_hash = generate_password_hash(form.password.data, method='pbkdf2:sha256')
         )
         form = UserForm(formdata=None)
@@ -59,10 +65,10 @@ def login_user():
     user = None
     check = None
     if form.validate_on_submit():
-        email = form.email.data
+        username = form.username.data
         password = form.password.data
         form = LoginForm(formdata=None)
-        user = UserModel.query.filter_by(email=email).first_or_404()
+        user = UserModel.query.filter_by(username=username).first_or_404()
         check = check_password_hash(user.password_hash,password)
     return render_template('login.html',form=form, user=user, check = check)
 
@@ -70,6 +76,7 @@ def login_user():
 def add_post():
     form = UserPostForm()
     if form.validate_on_submit():
+        
         post = UserPostModel(
             title=form.title.data,
             author=form.author.data,
@@ -84,7 +91,7 @@ def add_post():
     else:
         return render_template('user_post.html',form=form)
 
-@app.route('/post/<int:id>',methods=['POST','GET'])
+@app.route('/post/edit/<int:id>',methods=['POST','GET'])
 def alter_post(id):
     form = UserPostForm()
     post = UserPostModel.query.get_or_404(id)
@@ -98,4 +105,16 @@ def alter_post(id):
         flash('Post Alterado!')
         return redirect(url_for('index'))
     else:
+        form.title.data = post.title
+        form.author.data = post.author
+        form.slug.data = post.slug 
+        form.content.data = post.content 
         return render_template('alter_post.html',form=form, post=post)
+
+@app.route('/post/delete/<int:id>')
+def delete_post(id):
+    post = UserPostModel.query.get_or_404(id)
+    db.session.delete(post)
+    db.session.commit()
+    flash(f"Post deletado!")
+    return redirect(url_for('index'))
