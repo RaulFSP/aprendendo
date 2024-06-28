@@ -5,19 +5,25 @@
 {%endblock%}
 
 {%block body%} 
-<form action="{{url_for('add_post')}}" method="post" class="container">
+<br>
+<h2 class="text-center">Adicionar Postagem</h2>
+<br>
+<form action="{{url_for('add_post')}}" method="post" class="container" data-bs-theme="dark">
     <fieldset class="d-flex flex-column gap-2 shadow-sm p-3 mb-5 bg-body-tertiary rounded">
         {{ form.csrf_token }}
         
-        {{form.title.label}}
-        {{form.title()}}
-        {{form.author.label}}
+        {{form.title.label(class="text-light")}}
+        {{form.title}}
+        {{form.author.label(class="text-light")}}
         {{form.author()}}
-        {{form.slug.label}}
+        {{form.slug.label(class="text-light")}}
         {{form.slug()}}
-        {{form.content.label}}
+        {{form.content.label(class="text-light")}}
         {{form.content(rows="10", style="resize: none;")}}
-        {{form.submit(value="Postar", class="btn btn-warning")}}
+        <div class="d-grid gap-2 d-md-block text-center">
+
+            {{form.submit(value="Postar", class="btn btn-outline-light")}}
+        </div>
     </fieldset>
 </form>
 

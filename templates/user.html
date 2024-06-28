@@ -6,50 +6,27 @@
 
 {%block body%} 
 <br>
-<form action="{{url_for('add_user')}}" method="post" class="container">
+<h2 class="text-center">Cadastrar Usuário</h2>
+<br>
+<form action="{{url_for('add_user')}}" method="post" class="container" data-bs-theme="dark">
     <fieldset class="d-flex flex-column gap-2 shadow-sm p-3 mb-5 bg-body-tertiary rounded">
         {{ form.csrf_token }}
-        {{form.name.label}}
+        {{form.name.label(class="text-light")}}
         {{form.name}}
-        {{form.username.label}}
+        {{form.username.label(class="text-light")}}
         {{form.username}}
-        {{form.email.label}}
+        {{form.email.label(class="text-light")}}
         {{form.email}}
-        {{form.password.label}}
+        {{form.password.label(class="text-light")}}
         {{form.password}}
-        {{form.password_test.label}}
+        {{form.password_test.label(class="text-light")}}
         {{form.password_test}}
-        {{form.submit(value="Adicionar", class="btn btn-warning")}}
+        <div class="d-grid gap-2 d-md-block text-center">
+            {{form.submit(value="Cadastrar", class="btn btn-outline-light")}}
+
+        </div>
     </fieldset>
 </form>
-<div class="container">
-    <hr>
-</div>
 
-{%if users%}
-<table class="table table-striped container p-3 mb-5">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Nome</th>
-            <th>Username</th>
-            <th>Email</th>
-        </tr>
-    </thead>
-    <tbody>
-        {%for user in users%}
-        <tr>
-            <td>{{user.id}}</td>
-            <td><a href="{{url_for('alter_user',id=user.id)}}">{{user.name}}</a></td>
-            <td>{{user.username}}</td>
-            <td>{{user.email}}</td>
-        </tr>
-        {%endfor%}
-    </tbody>
-</table>
-
-{%else%}
-    <h2 class="text-center">Não há usuários adicionados!</h2>
-{%endif%}
 
 {%endblock%}
