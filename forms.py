@@ -16,8 +16,8 @@ class LoginForm(FlaskForm):
     submit = SubmitField()
 
 class UserPostForm(FlaskForm):
-    title = StringField(label="Título da Postagem",validators=[DataRequired(),length(min=2,max=30)])
-    author = StringField(label="Autor",validators=[DataRequired(),length(min=2,max=30)])
-    slug =  StringField(label="Assunto",validators=[DataRequired(),length(min=2,max=30)])
+    title = StringField(label="Nome do prato",validators=[DataRequired(),length(min=2,max=30)])
+    author = StringField(label="Cozinheiro",validators=[DataRequired(),length(min=2,max=30)])
+    slug =  StringField(label="Categoria",validators=[DataRequired(),length(min=2,max=30)])
     content = TextAreaField(label="Conteúdo", validators=[DataRequired(), length(min=1)])
     submit = SubmitField()

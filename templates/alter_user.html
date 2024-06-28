@@ -8,8 +8,13 @@
 <br>
 <h2 class="text-center">Alterar Informações</h2>
 <br>
-<form action="{{url_for('alter_user', id=user.id)}}" method="post" class="container" data-bs-theme="dark">
-    <fieldset class="d-flex flex-column gap-2 shadow-sm p-3 mb-5 bg-body-tertiary rounded">
+<form action="{{url_for('alter_user', id=user.id)}}" method="post" class="container shadow-sm p-3 mb-5 bg-body-tertiary rounded" data-bs-theme="dark">
+    <div class="d-grid gap-2 d-md-block">
+        <a href="{{url_for('dashboard_user')}}" class="btn btn-outline-light">Voltar</a> 
+
+    </div>
+    <br>
+    <fieldset class="d-flex flex-column gap-2 ">
         {{ form.csrf_token }}
         {{form.username.label(class="text-light")}}
         {{form.username(value=user.username)}}

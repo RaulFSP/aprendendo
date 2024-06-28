@@ -116,7 +116,7 @@ def delete_post(id):
     post = UserPostModel.query.get_or_404(id)
     db.session.delete(post)
     db.session.commit()
-    flash(f"Post deletado!")
+    flash(f"Prato deletado!")
     return redirect(url_for('index'))
 
 

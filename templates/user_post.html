@@ -6,10 +6,15 @@
 
 {%block body%} 
 <br>
-<h2 class="text-center">Adicionar Postagem</h2>
+<h2 class="text-center">Adicionar Prato</h2>
 <br>
-<form action="{{url_for('add_post')}}" method="post" class="container" data-bs-theme="dark">
-    <fieldset class="d-flex flex-column gap-2 shadow-sm p-3 mb-5 bg-body-tertiary rounded">
+<form action="{{url_for('add_post')}}" method="post" class="container shadow-sm p-3 mb-5 bg-body-tertiary rounded" data-bs-theme="dark">
+    <div class="d-grid gap-2 d-md-block d-md-flex justify-content-start">
+        <a href="{{url_for('index')}}" class="btn btn-outline-light">Voltar</a> 
+        
+    </div>
+    <br>
+    <fieldset class="d-flex flex-column gap-2 ">
         {{ form.csrf_token }}
         
         {{form.title.label(class="text-light")}}
@@ -22,7 +27,7 @@
         {{form.content(rows="10", style="resize: none;")}}
         <div class="d-grid gap-2 d-md-block text-center">
 
-            {{form.submit(value="Postar", class="btn btn-outline-light")}}
+            {{form.submit(value="Adicionar", class="btn btn-outline-light")}}
         </div>
     </fieldset>
 </form>
