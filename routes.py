@@ -74,10 +74,10 @@ def alter_user(id):
 def add_post():
     form = UserPostForm()
     if form.validate_on_submit():
-        
+        user_id = current_user.id
         post = UserPostModel(
             title=form.title.data,
-            author=form.author.data,
+            user_id=user_id,
             slug = form.slug.data,
             content = form.content.data
         )
@@ -96,7 +96,7 @@ def alter_post(id):
     post = UserPostModel.query.get_or_404(id)
     if form.validate_on_submit():
         post.title = form.title.data
-        post.author = form.author.data
+        
         post.slug = form.slug.data
         post.content = form.content.data
         form = UserPostForm(formdata=None)
@@ -105,7 +105,7 @@ def alter_post(id):
         return redirect(url_for('index'))
     else:
         form.title.data = post.title
-        form.author.data = post.author
+        
         form.slug.data = post.slug 
         form.content.data = post.content 
         return render_template('alter_post.html',form=form, post=post)
