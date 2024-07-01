@@ -27,7 +27,6 @@ def verify_password(self,password):
 
 @app.route('/')
 def index():
-    
     posts = UserPostModel.query.all()
     return render_template('index.html',posts=posts)
 
@@ -94,30 +93,38 @@ def add_post():
 def alter_post(id):
     form = UserPostForm()
     post = UserPostModel.query.get_or_404(id)
-    if form.validate_on_submit():
-        post.title = form.title.data
-        
-        post.slug = form.slug.data
-        post.content = form.content.data
-        form = UserPostForm(formdata=None)
-        db.session.commit()
-        flash('Post Alterado!')
-        return redirect(url_for('index'))
+    if post.poster.id == current_user.id:
+        if form.validate_on_submit():
+            post.title = form.title.data
+            
+            post.slug = form.slug.data
+            post.content = form.content.data
+            form = UserPostForm(formdata=None)
+            db.session.commit()
+            flash('Post Alterado!')
+            return redirect(url_for('index'))
+        else:
+            form.title.data = post.title
+            form.slug.data = post.slug 
+            form.content.data = post.content 
+            return render_template('alter_post.html',form=form, post=post)
     else:
-        form.title.data = post.title
-        
-        form.slug.data = post.slug 
-        form.content.data = post.content 
-        return render_template('alter_post.html',form=form, post=post)
+        flash('Você não pode alterar esse prato!')
+        return redirect(url_for('index'))
 
 @app.route('/post/delete/<int:id>')
 @login_required
 def delete_post(id):
     post = UserPostModel.query.get_or_404(id)
-    db.session.delete(post)
-    db.session.commit()
-    flash(f"Prato deletado!")
-    return redirect(url_for('index'))
+    id = current_user.id
+    if id == post.poster.id:
+        db.session.delete(post)
+        db.session.commit()
+        flash(f"Prato deletado!")
+        return redirect(url_for('index'))
+    else:
+        flash(f"Você não pode deletar esse prato!")
+        return redirect(url_for('index'))
 
 
 
@@ -157,3 +164,9 @@ def dashboard_user():
     username=current_user.username
     user = UserModel.query.filter_by(username=username).first_or_404()
     return render_template('dashboard.html',user=user)
+
+
+@app.route('/cozinheiros', methods=['POST','GET'])
+def listar_usuarios():
+    cozinheiros = UserModel.query.all()
+    return render_template('cozinheiros.html',cozinheiros=cozinheiros)

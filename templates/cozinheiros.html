@@ -1,0 +1,38 @@
+{%extends "base.html"%}
+
+{%block head%}
+<title>Cozinheiros</title>
+{%endblock%}
+{%block body%}
+<br>
+{%if cozinheiros%}
+<nav class="navbar bg-body-tertiary container rounded">
+    <div class="container-fluid d-flex justify-content-center ">
+        
+        <form class="d-flex justify-content-center" role="search">
+            <input class="form-control me-2" type="search" placeholder="categoria" aria-label="Search">
+            <button class="btn btn-outline-warning" type="submit">Pesquisar</button>
+        </form>
+    </div>
+</nav>
+<br>
+<div class="container d-flex  flex-wrap gap-3 justify-content-evenly">
+    {%for cozinheiro in cozinheiros%}
+    <div class="card" style="width: 18rem;">
+        <img src="..." class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">{{cozinheiro.username}}</h5>
+
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">nota</li>
+            <li class="list-group-item">categoria</li>
+
+        </ul>
+    </div>
+    {%endfor%}
+</div>
+{%else%}
+<p>Não há cozinheiros (pode abrir falência já)</p>
+{%endif%}
+{%endblock%}
