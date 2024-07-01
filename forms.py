@@ -17,7 +17,10 @@ class LoginForm(FlaskForm):
 
 class UserPostForm(FlaskForm):
     title = StringField(label="Nome do prato",validators=[DataRequired(),length(min=2,max=30)])
-    
     slug =  StringField(label="Categoria",validators=[DataRequired(),length(min=2,max=30)])
     content = TextAreaField(label="Conteúdo", validators=[DataRequired(), length(min=1)])
+    submit = SubmitField()
+
+class SearchForm(FlaskForm):
+    search = StringField(label="Pesquise", validators=[DataRequired()])
     submit = SubmitField()

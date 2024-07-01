@@ -6,18 +6,19 @@
 {%block body%}
 <br>
 {%if cozinheiros%}
-<nav class="navbar bg-body-tertiary container rounded">
-    <div class="container-fluid d-flex justify-content-center ">
-        
-        <form class="d-flex justify-content-center" role="search">
-            <input class="form-control me-2" type="search" placeholder="categoria" aria-label="Search">
-            <button class="btn btn-outline-warning" type="submit">Pesquisar</button>
-        </form>
-    </div>
-</nav>
+
+<div class="container-fluid d-flex justify-content-center gap-3">
+    <form class="d-flex justify-content-center" action="{{url_for('listar_usuarios')}}" method="post">
+        {{ form.csrf_token }}
+        {{form.search(class="form-control me-2" ,placeholder="Pesquise por cozinheiros")}}
+        {{form.submit(class="btn btn-warning", value="Pesquisar")}}
+    </form>
+</div>
+<hr>
 <br>
 <div class="container d-flex  flex-wrap gap-3 justify-content-evenly">
     {%for cozinheiro in cozinheiros%}
+    <a href="{{url_for('menu_cozinheiro',username=cozinheiro.username)}}" class="text-decoration-none">
     <div class="card" style="width: 18rem;">
         <img src="..." class="card-img-top" alt="...">
         <div class="card-body">
@@ -27,9 +28,9 @@
         <ul class="list-group list-group-flush">
             <li class="list-group-item">nota</li>
             <li class="list-group-item">categoria</li>
-
         </ul>
     </div>
+    </a>
     {%endfor%}
 </div>
 {%else%}

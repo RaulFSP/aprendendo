@@ -7,13 +7,20 @@
 {%block body%}
 <br>
 <div class="container p-3 border d-flex bg-body-tertiary rounded flex-column" data-bs-theme="dark">
+    <div class="d-grid gap-2 d-md-block">
+        <a href="{{url_for('index')}}" class="btn btn-outline-light">Voltar</a>
+    </div>
+    <br>
+    <div class="container-sm">
+        <img src="{{url_for('static',filename='images/default_profile.png')}}" alt="" class="rounded img-thumbnail" width="200px" height="200px">
+    </div>
+    <hr>
     <p class="text-light">{{user.name}}</p>
     <p class="text-light">{{user.username}}</p>
     <p class="text-light">{{user.email}}</p>
     <p class="text-light text-break" >{{user.password_hash}}</p>
     <div class="d-grid gap-2 d-md-block">
         <a href="{{url_for('alter_user',id=current_user.id)}}" class="btn btn-outline-light">Atualizar</a>
-
     </div>
 </div>
 {%endblock%}

@@ -1,0 +1,30 @@
+{%extends "base.html"%}
+
+{%block head%}
+<title>{{cozinheiro.username}}</title>
+{%endblock%}
+{%block body%}
+<br>
+<div class="container p-3 d-flex bg-body-tertiary rounded justify-content-center flex-column" data-bs-theme="dark">
+    <img src="..." class="align-self-center" alt="...">
+    <p class="text-light align-self-center">{{cozinheiro.name}}</p>
+    <p class="text-light align-self-center">{{cozinheiro.email}}</p>
+</div>
+<br>
+<hr>
+<br>
+{%if pratos%}
+<div class="container d-flex  flex-wrap gap-3 justify-content-evenly">
+{%for prato in pratos%}
+<div class="card shadow-sm p-3 bg-body-tertiary rounded" style="width: 25rem; height: 18rem;">
+    <div class="card-body " style="overflow: hidden;">
+        <h5 class="card-title">{{prato.title}}</h5>
+        <p class="card-text" style="text-overflow: ellipsis;">{{prato.content}}</p>
+    </div>
+</div>
+{%endfor%}
+</div>
+{%else%}
+<p>Não há postagens</p>
+{%endif%}
+{%endblock%}

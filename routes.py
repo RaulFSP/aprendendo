@@ -1,7 +1,7 @@
 from app import app,db, login_manager
 from flask import render_template, redirect, url_for, flash
 from models import UserModel, UserPostModel
-from forms import UserForm, LoginForm, UserPostForm
+from forms import UserForm, LoginForm, UserPostForm, SearchForm
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_required, logout_user, current_user, login_user
 
@@ -168,5 +168,16 @@ def dashboard_user():
 
 @app.route('/cozinheiros', methods=['POST','GET'])
 def listar_usuarios():
+    form = SearchForm()
     cozinheiros = UserModel.query.all()
-    return render_template('cozinheiros.html',cozinheiros=cozinheiros)
+    if form.validate_on_submit():
+        search = form.search.data
+        cozinheiros = UserModel.query.filter(UserModel.username.like('%{}%'.format(search))).all()
+        form = SearchForm(formdata=None)    
+    return render_template('cozinheiros.html',cozinheiros=cozinheiros, form=form)
+
+@app.route('/menu/<username>',methods=['POST','GET'])
+def menu_cozinheiro(username):
+    cozinheiro = UserModel.query.filter(UserModel.username == username).first_or_404()
+    pratos = UserPostModel.query.filter(UserPostModel.user_id == cozinheiro.id).all()
+    return render_template('menu_cozinheiro.html',cozinheiro=cozinheiro, pratos=pratos)
