@@ -12,6 +12,7 @@ class UserModel(db.Model, UserMixin):
     email = mapped_column(String(60), nullable=False, unique=True)
     password_hash = mapped_column(String(128), nullable=False)
     status = mapped_column(Boolean, unique=False,default=True)
+    profile_pic = mapped_column(String(256), nullable=False)
     posts = relationship('UserPostModel', backref='poster')
 
 class UserPostModel(db.Model):

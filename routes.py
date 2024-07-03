@@ -1,9 +1,13 @@
 from app import app,db, login_manager
 from flask import render_template, redirect, url_for, flash
 from models import UserModel, UserPostModel
-from forms import UserForm, LoginForm, UserPostForm, SearchForm
-from werkzeug.security import generate_password_hash, check_password_hash
+from forms import UserForm, LoginForm, UserPostForm, SearchForm, AlterUserForm, AlterUserPasswordForm
 from flask_login import login_required, logout_user, current_user, login_user
+from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
+from uuid import uuid1
+import os
+
 
 # flask login
 login_manager.login_view = "login"
@@ -34,11 +38,13 @@ def index():
 def add_user():
     form = UserForm()
     if form.validate_on_submit():
+        foto = form.profile_pic.data
         user = UserModel(
             name = form.name.data,
             email = form.email.data,
             username = form.username.data,
-            password_hash = generate_password_hash(form.password.data, method='pbkdf2:sha256')
+            password_hash = generate_password_hash(form.password.data, method='pbkdf2:sha256'),
+            profile_pic = "{}_{}".format(uuid1(),secure_filename(foto.filename))
         )
         form = UserForm(formdata=None)
         db.session.add(user)
@@ -46,26 +52,43 @@ def add_user():
         flash(f'Usuário {user.name} adicionado!')
         return redirect(url_for('add_user'))
     else:
-        users = UserModel.query.order_by(UserModel.id).all()
-        return render_template('user.html',form=form,users=users)
+        return render_template('user.html',form=form)
 
 #rota quebrada, precisa de atualizar o form de senha
 @app.route('/alter_user/<int:id>', methods=['POST','GET'])
 @login_required
 def alter_user(id):
-    form = UserForm()
+    form = AlterUserForm()
     user = UserModel.query.get_or_404(id)
     if form.validate_on_submit():
+        foto = form.profile_pic.data
         user.name = form.name.data
         user.email = form.email.data
         user.username = form.username.data
-        form = UserForm(formdata=None)
+        if foto != None:
+            user.profile_pic = "{}_{}".format(uuid1(),secure_filename(foto.filename))
+        form = AlterUserForm(formdata=None)
         db.session.commit()
-        flash(f'Usuário {user.name} alterado!')
-        return redirect(url_for('add_user'))
+        flash(f'Informações do usuário \'{current_user.username}\' alterada!')
+        return redirect(url_for('dashboard_user'))
     else:
         return render_template('alter_user.html',form=form, user=user)
 
+
+@app.route('/alter_user_password/<int:id>', methods=['POST','GET'])
+@login_required
+def alter_user_password(id):
+    form = AlterUserPasswordForm()
+    user = UserModel.query.get_or_404(id)
+    if form.validate_on_submit():
+        password_hash = generate_password_hash(form.password.data, method='pbkdf2:sha256')
+        user.password_hash = password_hash
+        form = AlterUserPasswordForm(formdata=None)
+        db.session.commit()
+        flash(f'Senha do usuário \'{current_user.username}\' alterada!')
+        return redirect(url_for('dashboard_user'))
+    else:
+        return render_template('alter_user_password.html',form=form, user=user)
 
 
 @app.route('/add_post',methods=['POST','GET'])

@@ -10,17 +10,20 @@
     <div class="d-grid gap-2 d-md-block">
         <a href="{{url_for('index')}}" class="btn btn-outline-light">Voltar</a>
     </div>
-    <br>
+    <hr>
     <div class="container-sm">
         <img src="{{url_for('static',filename='images/default_profile.png')}}" alt="" class="rounded img-thumbnail" width="200px" height="200px">
+        <p class="text-light">{{user.profile_pic}}</p>
     </div>
     <hr>
     <p class="text-light">{{user.name}}</p>
     <p class="text-light">{{user.username}}</p>
     <p class="text-light">{{user.email}}</p>
     <p class="text-light text-break" >{{user.password_hash}}</p>
+    <hr>
     <div class="d-grid gap-2 d-md-block">
         <a href="{{url_for('alter_user',id=current_user.id)}}" class="btn btn-outline-light">Atualizar</a>
+        <a href="{{url_for('alter_user_password',id=current_user.id)}}" class="btn btn-outline-light">Alterar Senha</a>
     </div>
 </div>
 {%endblock%}

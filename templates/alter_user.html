@@ -9,23 +9,35 @@
 <br>
 <h2 class="text-center">Alterar Informações</h2>
 <br>
-<form action="{{url_for('alter_user', id=user.id)}}" method="post" class="container shadow-sm p-3 mb-5 bg-body-tertiary rounded" data-bs-theme="dark">
+<form action="{{url_for('alter_user', id=user.id)}}" method="post" class="container shadow-sm p-3 mb-5 bg-body-tertiary rounded" data-bs-theme="dark" enctype="multipart/form-data">
+    {{ form.csrf_token }}
     <div class="d-grid gap-2 d-md-block">
         <a href="{{url_for('dashboard_user')}}" class="btn btn-outline-light">Voltar</a> 
-
     </div>
     <br>
+    <img src="{{url_for('static',filename='images/default_profile.png')}}" alt="" class="rounded img-thumbnail" width="200px" height="200px" >
+    <hr>
+    <div class="input-group mb-3">
+        {{form.profile_pic.label(class="text-light input-group-text")}}
+        {{form.profile_pic(class="text-light form-control")}}
+    </div>
+    
     <fieldset class="d-flex flex-column gap-2 ">
-        {{ form.csrf_token }}
-        {{form.username.label(class="text-light")}}
-        {{form.username(value=user.username)}}
-        {{form.name.label(class="text-light")}}
-        {{form.name(value=user.name)}}
-        {{form.email.label(class="text-light")}}
-        {{form.email(value=user.email)}}
+        <div class="input-group mb-3">
+            {{form.name.label(class="text-light input-group-text")}}
+            {{form.name(value=user.name, class="form-control")}}
+        </div>
+        <div class="input-group mb-3">
+            {{form.username.label(class="text-light input-group-text")}}
+            {{form.username(value=user.username, class="form-control")}}
+        </div>
+        <div class="input-group mb-3">
+
+            {{form.email.label(class="text-light input-group-text")}}
+            {{form.email(value=user.email, class="form-control")}}
+        </div>
         <div class="d-grid gap-2 d-md-block text-center">
             {{form.submit(value="Atualizar", class="btn btn-outline-light")}}
-
         </div>
     </fieldset>
 </form>
