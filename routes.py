@@ -32,20 +32,23 @@ def verify_password(self,password):
 @app.route('/')
 def index():
     posts = UserPostModel.query.all()
-    return render_template('index.html',posts=posts)
+    cozinheiros = UserModel.query.all()
+    return render_template('index.html',posts=posts, cozinheiros=cozinheiros)
 
 @app.route('/add_user',methods=['POST','GET'])
 def add_user():
     form = UserForm()
     if form.validate_on_submit():
         foto = form.profile_pic.data
+        profile_pic = "{}_{}".format(uuid1(),secure_filename(foto.filename))
         user = UserModel(
             name = form.name.data,
             email = form.email.data,
             username = form.username.data,
             password_hash = generate_password_hash(form.password.data, method='pbkdf2:sha256'),
-            profile_pic = "{}_{}".format(uuid1(),secure_filename(foto.filename))
+            profile_pic = profile_pic
         )
+        foto.save(os.path.join(app.config['UPLOAD_FOLDER'], profile_pic))
         form = UserForm(formdata=None)
         db.session.add(user)
         db.session.commit()
@@ -54,7 +57,7 @@ def add_user():
     else:
         return render_template('user.html',form=form)
 
-#rota quebrada, precisa de atualizar o form de senha
+
 @app.route('/alter_user/<int:id>', methods=['POST','GET'])
 @login_required
 def alter_user(id):
@@ -66,7 +69,9 @@ def alter_user(id):
         user.email = form.email.data
         user.username = form.username.data
         if foto != None:
-            user.profile_pic = "{}_{}".format(uuid1(),secure_filename(foto.filename))
+            profile_pic = "{}_{}".format(uuid1(),secure_filename(foto.filename))
+            user.profile_pic = profile_pic
+            foto.save(os.path.join(app.config['UPLOAD_FOLDER'], profile_pic))
         form = AlterUserForm(formdata=None)
         db.session.commit()
         flash(f'Informações do usuário \'{current_user.username}\' alterada!')

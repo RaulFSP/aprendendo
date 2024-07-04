@@ -20,7 +20,7 @@
     {%for cozinheiro in cozinheiros%}
     <a href="{{url_for('menu_cozinheiro',username=cozinheiro.username)}}" class="text-decoration-none">
     <div class="card" style="width: 18rem;">
-        <img src="..." class="card-img-top" alt="...">
+        <img src="{{url_for('static',filename='temp/'+cozinheiro.profile_pic)}}" class="card-img-top" alt="...">
         <div class="card-body">
             <h5 class="card-title">{{cozinheiro.username}}</h5>
 
@@ -34,6 +34,6 @@
     {%endfor%}
 </div>
 {%else%}
-<p>Não há cozinheiros (pode abrir falência já)</p>
+<p class="text-center">Não há cozinheiros (pode abrir falência já)</p>
 {%endif%}
 {%endblock%}

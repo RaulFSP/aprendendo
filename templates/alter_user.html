@@ -15,7 +15,11 @@
         <a href="{{url_for('dashboard_user')}}" class="btn btn-outline-light">Voltar</a> 
     </div>
     <br>
-    <img src="{{url_for('static',filename='images/default_profile.png')}}" alt="" class="rounded img-thumbnail" width="200px" height="200px" >
+    {%if current_user.profile_pic == None%}
+        <img src="{{url_for('static',filename='images/default_profile.png')}}" alt="" class="rounded img-thumbnail" width="200px" height="200px">
+        {%else%}
+        <img src="{{url_for('static',filename='temp/'+current_user.profile_pic)}}" alt="" class="rounded img-thumbnail" width="200px" height="200px">
+        {%endif%}
     <hr>
     <div class="input-group mb-3">
         {{form.profile_pic.label(class="text-light input-group-text")}}

@@ -11,9 +11,12 @@
         <a href="{{url_for('index')}}" class="btn btn-outline-light">Voltar</a>
     </div>
     <hr>
-    <div class="container-sm">
+    <div class="container-sm "style="overflow: hidden;">
+        {%if current_user.profile_pic == None%}
         <img src="{{url_for('static',filename='images/default_profile.png')}}" alt="" class="rounded img-thumbnail" width="200px" height="200px">
-        <p class="text-light">{{user.profile_pic}}</p>
+        {%else%}
+        <img src="{{url_for('static',filename='temp/'+current_user.profile_pic)}}" alt="" class="rounded img-thumbnail" width="200px" height="200px">
+        {%endif%}
     </div>
     <hr>
     <p class="text-light">{{user.name}}</p>
