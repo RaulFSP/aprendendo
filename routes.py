@@ -31,8 +31,8 @@ def verify_password(self,password):
 
 @app.route('/')
 def index():
-    posts = UserPostModel.query.all()
-    cozinheiros = UserModel.query.all()
+    posts = UserPostModel.query.filter(UserPostModel.status == True).all()
+    cozinheiros = UserModel.query.filter(UserModel.status == True).all()
     return render_template('index.html',posts=posts, cozinheiros=cozinheiros)
 
 @app.route('/add_user',methods=['POST','GET'])
@@ -69,6 +69,7 @@ def alter_user(id):
         user.email = form.email.data
         user.username = form.username.data
         if foto != None:
+            os.remove(os.path.join(app.config['UPLOAD_FOLDER'], user.profile_pic))
             profile_pic = "{}_{}".format(uuid1(),secure_filename(foto.filename))
             user.profile_pic = profile_pic
             foto.save(os.path.join(app.config['UPLOAD_FOLDER'], profile_pic))
@@ -96,25 +97,38 @@ def alter_user_password(id):
         return render_template('alter_user_password.html',form=form, user=user)
 
 
-@app.route('/add_post',methods=['POST','GET'])
+@app.route('/add_post', methods=['POST', 'GET'])
 @login_required
 def add_post():
     form = UserPostForm()
     if form.validate_on_submit():
         user_id = current_user.id
+        foto = form.prato_pic.data
+        prato_pic = None
+        if foto:
+            prato_pic = "{}_{}".format(uuid1(), secure_filename(foto.filename))
+            try:
+                foto.save(os.path.join(app.config['UPLOAD_FOLDER'], prato_pic))
+            except Exception as e:
+                flash('Deu erro')
+                return redirect(url_for('add_post'))
+        
         post = UserPostModel(
-            title=form.title.data,
             user_id=user_id,
-            slug = form.slug.data,
-            content = form.content.data
+            name=form.name.data,
+            categoria=form.categoria.data,
+            content=form.content.data,
+            preco=form.preco.data,
+            prato_pic=prato_pic
         )
         form = UserPostForm(formdata=None)
         db.session.add(post)
         db.session.commit()
-        flash("Post adicionado!")
+        flash(f'{post.name} adicionado!')
+        
         return redirect(url_for('add_post'))
     else:
-        return render_template('user_post.html',form=form)
+        return render_template('user_post.html', form=form)
 
 @app.route('/post/edit/<int:id>',methods=['POST','GET'])
 @login_required
@@ -123,17 +137,23 @@ def alter_post(id):
     post = UserPostModel.query.get_or_404(id)
     if post.poster.id == current_user.id:
         if form.validate_on_submit():
-            post.title = form.title.data
-            
-            post.slug = form.slug.data
+            foto = form.prato_pic.data
+            if foto != None:
+                os.remove(os.path.join(app.config['UPLOAD_FOLDER'], user.prato_pic))
+                prato_pic = "{}_{}".format(uuid1(),secure_filename(foto.filename))
+                post.prato_pic = prato_pic
+                foto.save(os.path.join(app.config['UPLOAD_FOLDER'], profile_pic))
+            post.name = form.name.data
+            post.categoria=form.categoria.data
             post.content = form.content.data
+            post.preco = form.preco.data
             form = UserPostForm(formdata=None)
             db.session.commit()
             flash('Post Alterado!')
             return redirect(url_for('index'))
         else:
-            form.title.data = post.title
-            form.slug.data = post.slug 
+            form.name.data = post.name
+            form.categoria.data = post.categoria 
             form.content.data = post.content 
             return render_template('alter_post.html',form=form, post=post)
     else:
@@ -189,8 +209,7 @@ def logout():
 @app.route('/dashboard', methods=['POST','GET'])
 @login_required
 def dashboard_user():
-    username=current_user.username
-    user = UserModel.query.filter_by(username=username).first_or_404()
+    user = UserModel.query.filter_by(id=current_user.id).first_or_404()
     return render_template('dashboard.html',user=user)
 
 

@@ -20,11 +20,21 @@
 {%if pratos%}
 <div class="container d-flex  flex-wrap gap-3 justify-content-evenly">
 {%for prato in pratos%}
-<div class="card shadow-sm p-3 bg-body-tertiary rounded" style="width: 25rem; height: 18rem;">
+<div class="card" style="width: 18rem;">
+    {%if prato.prato_pic == None%}
+    <img src="{{url_for('static',filename='images/default_plate.jpg')}}" class="card-img-top" width="150rem" height="180rem">
+    {%else%}
+    <img src="{{url_for('static',filename='temp/'+prato.prato_pic)}}" class="card-img-top" width="150rem" height="180rem">
+    
+    {%endif%}
     <div class="card-body " style="overflow: hidden;">
-        <h5 class="card-title">{{prato.title}}</h5>
-        <p class="card-text" style="text-overflow: ellipsis;">{{prato.content}}</p>
+        <h6 class="card-title">{{prato.name}}</h5>
+        <p class="card-text text-break">{{prato.content}}</p>
     </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">{{prato.categoria}}</li>
+        <li class="list-group-item">{{"R$\t{:,.2f}".format(prato.preco)}}</li>
+    </ul>
 </div>
 {%endfor%}
 </div>

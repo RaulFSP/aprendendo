@@ -19,10 +19,10 @@
         {%endif%}
     </div>
     <hr>
-    <p class="text-light">{{user.name}}</p>
-    <p class="text-light">{{user.username}}</p>
-    <p class="text-light">{{user.email}}</p>
-    <p class="text-light text-break" >{{user.password_hash}}</p>
+    <p class="text-light">Nome: {{user.name}}</p>
+    <p class="text-light">Nome de Usuário: {{user.username}}</p>
+    <p class="text-light">Email: {{user.email}}</p>
+    <p class="text-light">Data de Entrada: {{"{:0}/{}/{}".format(user.data_entrada.day,user.data_entrada.month,user.data_entrada.year)}}</p>
     <hr>
     <div class="d-grid gap-2 d-md-block">
         <a href="{{url_for('alter_user',id=current_user.id)}}" class="btn btn-outline-light">Atualizar</a>

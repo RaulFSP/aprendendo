@@ -13,6 +13,6 @@ def create_database(db_name, host="localhost", user="root", passwd="12345678"):
         return str(e)
 
 with app.app_context():
-    create_database("atividade_votacao")
+    create_database("integrador")
     db.drop_all()
     db.create_all()

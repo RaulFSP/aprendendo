@@ -8,27 +8,45 @@
 <br>
 <h2 class="text-center">Adicionar Prato</h2>
 <br>
-<form action="{{url_for('add_post')}}" method="post" class="container shadow-sm p-3 mb-5 bg-body-tertiary rounded" data-bs-theme="dark">
-    <div class="d-grid gap-2 d-md-block d-md-flex justify-content-start">
-        <a href="{{url_for('index')}}" class="btn btn-outline-light">Voltar</a> 
-        
-    </div>
-    <br>
-    <fieldset class="d-flex flex-column gap-2 ">
-        {{ form.csrf_token }}
-        
-        {{form.title.label(class="text-light")}}
-        {{form.title}}
-        
-        {{form.slug.label(class="text-light")}}
-        {{form.slug()}}
-        {{form.content.label(class="text-light")}}
-        {{form.content(rows="10", style="resize: none;")}}
-        <div class="d-grid gap-2 d-md-block text-center">
-
-            {{form.submit(value="Adicionar", class="btn btn-outline-light")}}
+<form action="{{url_for('add_post')}}" method="post" class="container shadow-sm p-3 mb-5 bg-body-tertiary rounded" data-bs-theme="dark" enctype="multipart/form-data">
+    {{ form.csrf_token }}
+        <div class="d-grid gap-2 d-md-block">
+            <a href="{{url_for('index')}}" class="btn btn-outline-light">Voltar</a>
         </div>
-    </fieldset>
+        <br>
+        
+        <img src="{{url_for('static',filename='images/default_plate.jpg')}}" alt="" class="rounded img-thumbnail m-2" width="200px" height="200px" >
+        
+        <div class="input-group mb-3">
+            {{form.prato_pic.label(class="text-light input-group-text")}}
+            {{form.prato_pic(class="text-light form-control")}}
+        </div>
+        
+        <div class="input-group mb-3">
+            {{form.name.label(class="text-light input-group-text")}}
+            {{form.name(class="form-control")}}
+
+        </div>
+        <div class="input-group mb-3">
+
+            {{form.categoria.label(class="text-light input-group-text")}}
+            {{form.categoria(class="form-control")}}
+        </div>
+        <div class="input-group mb-3">
+            {{form.content.label(class="text-light input-group-text")}}
+            {{form.content(class="form-control")}}
+            
+        </div>
+        <div class="input-group mb-3">
+            {{form.preco.label(class="text-light input-group-text")}}
+            {{form.preco(class="form-control")}}
+
+        </div>
+        
+        <div class="d-grid gap-2 d-md-block text-center">
+            {{form.submit(value="Cadastrar", class="btn btn-outline-light")}}
+
+        </div>
 </form>
 
 {%endblock%}

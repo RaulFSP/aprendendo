@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField, BooleanField, ValidationError, TextAreaField
+from wtforms import StringField, SubmitField, PasswordField, BooleanField, ValidationError, TextAreaField, FloatField
 from wtforms.validators import DataRequired, length, EqualTo
 from flask_wtf.file import FileField, FileAllowed
 
@@ -31,9 +31,11 @@ class LoginForm(FlaskForm):
     submit = SubmitField()
 
 class UserPostForm(FlaskForm):
-    title = StringField(label="Nome do prato",validators=[DataRequired(),length(min=2,max=30)])
-    slug =  StringField(label="Categoria",validators=[DataRequired(),length(min=2,max=30)])
+    name = StringField(label="Nome do prato",validators=[DataRequired(),length(min=2,max=30)])
+    categoria =  StringField(label="Categoria",validators=[DataRequired(),length(min=2,max=30)])
     content = TextAreaField(label="Conteúdo", validators=[DataRequired(), length(min=1)])
+    preco = FloatField(label="Digite o valor do prato",validators=[DataRequired()])
+    prato_pic = FileField(label="Insira sua foto",validators=[FileAllowed(['jpg', 'png','jpeg','webp'], message= 'Apenas arquivos jpg e png!')])
     submit = SubmitField()
 
 class SearchForm(FlaskForm):

@@ -6,27 +6,32 @@
 
 {%block body%}
     <br>
-<form action="{{url_for('alter_post',id=post.id)}}" method="post" class="container shadow-sm p-3 mb-5 bg-body-tertiary rounded" data-bs-theme="dark">
+<form action="{{url_for('alter_post',id=post.id)}}" method="post" class="container shadow-sm p-3 mb-5 bg-body-tertiary rounded" data-bs-theme="dark" enctype="multipart/form-data">
+    {{ form.csrf_token }}
     <div class="d-grid gap-2 d-md-block d-md-flex justify-content-start">
         <a href="{{url_for('index')}}" class="btn btn-outline-light">Voltar</a> 
         
     </div>
     <br>
-    <fieldset class="d-flex flex-column gap-2">
-        {{ form.csrf_token }}
+    
+    <div class="input-group mb-3">
+        {{form.name.label(class="text-light input-group-text")}}
+        {{form.name(class="text-light form-control")}}
+
+    </div>
+    <div class="input-group mb-3"> 
+
+        {{form.categoria.label(class="text-light")}}
+        {{form.categoria()}}
+    </div>
         
-        {{form.title.label(class="text-light")}}
-        {{form.title()}}
-        
-        {{form.slug.label(class="text-light")}}
-        {{form.slug()}}
         {{form.content.label(class="text-light")}}
         {{form.content(rows="10", style="resize: none;")}}
         <div class="d-grid gap-2 d-md-block d-md-flex justify-content-evenly">
             <a href="{{url_for('delete_post',id=post.id)}}" class="btn btn-outline-danger">Deletar Post</a> 
             {{form.submit(value="Atualizar", class="btn btn-outline-light")}}
         </div>
-    </fieldset>
+    
 </form>
 
 {%endblock%}
