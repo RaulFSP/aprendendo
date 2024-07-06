@@ -139,10 +139,10 @@ def alter_post(id):
         if form.validate_on_submit():
             foto = form.prato_pic.data
             if foto != None:
-                os.remove(os.path.join(app.config['UPLOAD_FOLDER'], user.prato_pic))
+                os.remove(os.path.join(app.config['UPLOAD_FOLDER'], post.prato_pic))
                 prato_pic = "{}_{}".format(uuid1(),secure_filename(foto.filename))
                 post.prato_pic = prato_pic
-                foto.save(os.path.join(app.config['UPLOAD_FOLDER'], profile_pic))
+                foto.save(os.path.join(app.config['UPLOAD_FOLDER'], prato_pic))
             post.name = form.name.data
             post.categoria=form.categoria.data
             post.content = form.content.data
@@ -154,7 +154,9 @@ def alter_post(id):
         else:
             form.name.data = post.name
             form.categoria.data = post.categoria 
-            form.content.data = post.content 
+            form.content.data = post.content
+            form.prato_pic.data = post.prato_pic
+            form.preco.data = post.preco
             return render_template('alter_post.html',form=form, post=post)
     else:
         flash('Você não pode alterar esse prato!')

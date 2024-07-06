@@ -1,37 +1,52 @@
 {%extends "base.html"%}
 
-{%block head%} 
+{%block head%}
 <title>Alter Post</title>
 {%endblock%}
 
 {%block body%}
-    <br>
-<form action="{{url_for('alter_post',id=post.id)}}" method="post" class="container shadow-sm p-3 mb-5 bg-body-tertiary rounded" data-bs-theme="dark" enctype="multipart/form-data">
+<br>
+<form action="{{url_for('alter_post',id=post.id)}}" method="post"
+    class="container shadow-sm p-3 mb-5 bg-body-tertiary rounded" data-bs-theme="dark" enctype="multipart/form-data">
     {{ form.csrf_token }}
     <div class="d-grid gap-2 d-md-block d-md-flex justify-content-start">
-        <a href="{{url_for('index')}}" class="btn btn-outline-light">Voltar</a> 
-        
+        <a href="{{url_for('index')}}" class="btn btn-outline-light">Voltar</a>
     </div>
     <br>
-    
+    {%if post.profile_pic%}
+    <img src="{{url_for('static',filename='temp/'+post.prato_pic)}}" alt="" class="rounded img-thumbnail" width="200px" height="200px">
+    {%else%}
+    <img src="{{url_for('static',filename='images/default_profile.png')}}" alt="" class="rounded img-thumbnail" width="200px" height="200px">
+        {%endif%}
+        
+    <div class="input-group mb-3">
+        {{form.prato_pic.label(class="text-light input-group-text")}}
+        {{form.prato_pic(class="text-light form-control")}}
+    </div>
     <div class="input-group mb-3">
         {{form.name.label(class="text-light input-group-text")}}
         {{form.name(class="text-light form-control")}}
 
     </div>
-    <div class="input-group mb-3"> 
+    <div class="input-group mb-3">
 
-        {{form.categoria.label(class="text-light")}}
-        {{form.categoria()}}
+        {{form.categoria.label(class="text-light input-group-text")}}
+        {{form.categoria(class="text-light form-control")}}
     </div>
-        
-        {{form.content.label(class="text-light")}}
-        {{form.content(rows="10", style="resize: none;")}}
-        <div class="d-grid gap-2 d-md-block d-md-flex justify-content-evenly">
-            <a href="{{url_for('delete_post',id=post.id)}}" class="btn btn-outline-danger">Deletar Post</a> 
-            {{form.submit(value="Atualizar", class="btn btn-outline-light")}}
-        </div>
-    
+    <div class="input-group mb-3">
+        {{form.content.label(class="text-light input-group-text")}}
+        {{form.content(rows="5", style="resize: none;",class="text-light form-control")}}
+    </div>
+    <div class="input-group mb-3">
+        {{form.preco.label(class="text-light input-group-text")}}
+        {{form.preco(class="form-control")}}
+
+    </div>
+    <div class="d-grid gap-2 d-md-block d-md-flex justify-content-evenly">
+        <a href="{{url_for('delete_post',id=post.id)}}" class="btn btn-outline-danger">Deletar Post</a>
+        {{form.submit(value="Atualizar", class="btn btn-outline-light")}}
+    </div>
+
 </form>
 
 {%endblock%}

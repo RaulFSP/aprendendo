@@ -5,11 +5,14 @@
 {%endblock%}
 {%block body%}
 <br>
-<div class="container d-grid gap-2 d-md-block">
-    <a href="{{url_for('listar_usuarios')}}" class="btn btn-outline-light">Voltar</a> 
-</div>
-<br>
+
+
 <div class="container p-3 d-flex bg-body-tertiary rounded justify-content-center flex-column" data-bs-theme="dark">
+    <div class="container d-grid gap-2 d-md-block">
+        <a href="{{url_for('listar_usuarios')}}" class="btn btn-outline-light">Voltar</a> 
+    </div>
+    <br>
+    <p class="text-light align-self-center">{{cozinheiro.data_entrada}}</p>
     <img src="{{url_for('static',filename='temp/'+cozinheiro.profile_pic)}}" class="align-self-center rounded img-thumbnail" width="200px" height="200px">
     <p class="text-light align-self-center">{{cozinheiro.name}}</p>
     <p class="text-light align-self-center">{{cozinheiro.email}}</p>
