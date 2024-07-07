@@ -5,25 +5,28 @@
 {%endblock%}
 {%block body%}
 <br>
+<h2 class="text-center">Informações</h2>
 
-
-<div class="container p-3 d-flex bg-body-tertiary rounded justify-content-center flex-column" >
+<div class="container p-3 d-flex bg-body-tertiary  justify-content-center flex-column border border-warning shadow rounded" >
     <div class="container d-grid gap-2 d-md-block">
         <a href="{{url_for('listar_usuarios')}}" class="btn btn-dark">Voltar</a> 
     </div>
     <br>
     <p class="align-self-center">Data de Entrada: {{"{:0}/{}/{}".format(cozinheiro.data_entrada.day,cozinheiro.data_entrada.month,cozinheiro.data_entrada.year)}}</p>
     <img src="{{url_for('static',filename='temp/'+cozinheiro.profile_pic)}}" class="align-self-center rounded img-thumbnail m-2" width="200px" height="200px">
-    <p class="align-self-center">{{cozinheiro.name}}</p>
-    <p class="align-self-center">{{cozinheiro.email}}</p>
+    <p class="align-self-center">Nome: {{cozinheiro.name}}</p>
+    <p class="align-self-center">Contato: {{cozinheiro.email}}</p>
+    
+    <p class="align-self-center">{{"{} n°{} {} {}".format(endereco.cep,endereco.numero,endereco.bairro,endereco.endereco)}}</p>
 </div>
 <br>
 <hr>
+<h2 class="text-center">Cardápio</h2>
 <br>
 {%if pratos%}
 <div class="container d-flex  flex-wrap gap-3 justify-content-evenly">
 {%for prato in pratos%}
-<div class="card" style="width: 18rem;">
+<div class="card border-warning shadow" style="width: 18rem;">
     {%if prato.prato_pic == None%}
     <img src="{{url_for('static',filename='images/default_plate.jpg')}}" class="card-img-top" width="150rem" height="180rem">
     {%else%}

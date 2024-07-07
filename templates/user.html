@@ -8,7 +8,7 @@
 <br>
 <h2 class="text-center">Cadastrar Usuário</h2>
 <br>
-<form action="{{url_for('add_user')}}" method="post" class="container shadow-sm p-3 mb-5 bg-body-tertiary rounded" enctype="multipart/form-data">
+<form action="{{url_for('add_user')}}" method="post" class="container border border-warning shadow p-3 mb-5 bg-body-tertiary rounded" enctype="multipart/form-data">
     
         {{ form.csrf_token }}
         <div class="d-grid gap-2 d-md-block">
@@ -74,7 +74,7 @@
             {{form.complemento(class="form-control")}}
         </div>
         <div class="d-grid gap-2 d-md-block text-center">
-            {{form.submit(value="Cadastrar", class="btn btn-outline-light")}}
+            {{form.submit(value="Cadastrar", class="btn btn-warning")}}
 
         </div>
     

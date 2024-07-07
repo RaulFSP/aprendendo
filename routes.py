@@ -31,9 +31,9 @@ def verify_password(self,password):
 
 @app.route('/')
 def index():
-    posts = UserPostModel.query.filter(UserPostModel.status == True).all()
+    pratos = UserPostModel.query.filter(UserPostModel.status == True).all()
     cozinheiros = UserModel.query.filter(UserModel.status == True).all()
-    return render_template('index.html',posts=posts, cozinheiros=cozinheiros)
+    return render_template('index.html',pratos=pratos, cozinheiros=cozinheiros)
 
 @app.route('/add_user', methods=['POST', 'GET'])
 def add_user():
@@ -55,7 +55,7 @@ def add_user():
             username=form.username.data,
             password_hash=generate_password_hash(form.password.data, method='pbkdf2:sha256'),
             profile_pic=profile_pic,
-            cozinheiro=bool(form.cozinheiro.data)
+            cozinheiro=form.cozinheiro.data == 'True'
         )
         db.session.add(user)
         db.session.commit()
@@ -80,13 +80,20 @@ def add_user():
 @app.route('/alter_user/<int:id>', methods=['POST','GET'])
 @login_required
 def alter_user(id):
-    form = AlterUserForm()
+    form = AlterUserForm(cozinheiro=current_user.cozinheiro)
     user = UserModel.query.get_or_404(id)
+    endereco = UserEnderecoModel.query.filter(UserEnderecoModel.user_id==current_user.id).first_or_404()
     if form.validate_on_submit():
         foto = form.profile_pic.data
         user.name = form.name.data
         user.email = form.email.data
         user.username = form.username.data
+        user.cozinheiro = form.cozinheiro.data == 'True'
+        endereco.cep = form.cep.data
+        endereco.numero = form.numero.data
+        endereco.bairro = form.numero.data
+        endereco.endereco = form.endereco.data
+        endereco.complemento = form.complemento.data
         if foto != None:
             if user.profile_pic != None:
                 os.remove(os.path.join(app.config['UPLOAD_FOLDER'], user.profile_pic))
@@ -98,7 +105,10 @@ def alter_user(id):
         flash(f'Informações do usuário \'{current_user.username}\' alterada!')
         return redirect(url_for('dashboard_user'))
     else:
-        return render_template('alter_user.html',form=form, user=user)
+        for field, errors in form.errors.items():
+            for error in errors:
+                flash(error, 'danger')
+    return render_template('alter_user.html',form=form, user=user, endereco=endereco)
 
 @app.route('/desabilitar_usuario')
 @login_required
@@ -263,16 +273,17 @@ def logout():
 def dashboard_user():
     user = UserModel.query.get_or_404(current_user.id)
     pratos = UserPostModel.query.filter(UserPostModel.user_id==current_user.id).all()
-    return render_template('dashboard.html',user=user, pratos=pratos)
+    endereco = UserEnderecoModel.query.filter(UserEnderecoModel.user_id==current_user.id).first_or_404()
+    return render_template('dashboard.html',user=user, pratos=pratos, endereco=endereco)
 
 
 @app.route('/cozinheiros', methods=['POST','GET'])
 def listar_usuarios():
     form = SearchForm()
-    cozinheiros = UserModel.query.filter(UserModel.status == True).all()
+    cozinheiros = UserModel.query.filter(UserModel.status == True, UserModel.cozinheiro == True).all()
     if form.validate_on_submit():
         search = form.search.data
-        cozinheiros = UserModel.query.filter(UserModel.username.like('%{}%'.format(search))).all()
+        cozinheiros = UserModel.query.filter(UserModel.username.like('%{}%'.format(search)), UserModel.cozinheiro == True).all()
         form = SearchForm(formdata=None)    
     return render_template('cozinheiros.html',cozinheiros=cozinheiros, form=form)
 
@@ -280,4 +291,5 @@ def listar_usuarios():
 def menu_cozinheiro(username):
     cozinheiro = UserModel.query.filter(UserModel.username == username).first_or_404()
     pratos = UserPostModel.query.filter(UserPostModel.user_id == cozinheiro.id).all()
-    return render_template('menu_cozinheiro.html',cozinheiro=cozinheiro, pratos=pratos)
+    endereco = UserEnderecoModel.query.filter(UserEnderecoModel.user_id==cozinheiro.id).first_or_404()
+    return render_template('menu_cozinheiro.html',cozinheiro=cozinheiro, pratos=pratos, endereco=endereco)

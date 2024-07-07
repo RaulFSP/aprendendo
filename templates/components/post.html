@@ -1,21 +1,24 @@
-{%if posts%}
+{%if pratos%}
 <div class="container d-flex  flex-wrap gap-3 justify-content-evenly">
-{%for post in posts%}
-<div class="card shadow-sm p-3 bg-body-tertiary rounded" style="width: 25rem; height: 18rem;">
+{%for prato in pratos%}
+<div class="card border-warning shadow" style="width: 18rem;">
+    {%if prato.prato_pic == None%}
+    <img src="{{url_for('static',filename='images/default_plate.jpg')}}" class="card-img-top" width="150rem" height="180rem">
+    {%else%}
+    <img src="{{url_for('static',filename='temp/'+prato.prato_pic)}}" class="card-img-top" width="150rem" height="180rem">
+    
+    {%endif%}
     <div class="card-body " style="overflow: hidden;">
-        {%if post.poster.id == current_user.id%}
-        <a href="{{url_for('alter_post',id=post.id)}}" class="btn btn-warning">Alterar</a>
-        {%endif%}
-        <a href="#" class="btn btn-warning">Comprar</a>
-        <h5 class="card-title">{{post.title}}</h5>
-        <h6 class="card-subtitle mb-2 text-body-secondary">{{post.poster.username}} <br>
-            {{post.date_posted}}</h6>
-        <p class="card-text" style="text-overflow: ellipsis;">{{post.content}}</p>
-        
+        <h6 class="card-title">{{prato.name}}</h5>
+        <p class="card-text text-break">{{prato.content}}</p>
     </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">{{prato.categoria}}</li>
+        <li class="list-group-item">{{"R$\t{:,.2f}".format(prato.preco)}}</li>
+    </ul>
 </div>
 {%endfor%}
 </div>
 {%else%}
-<p>Não há postagens</p>
+<p class="text-center">Não há postagens</p>
 {%endif%}

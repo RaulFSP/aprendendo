@@ -15,7 +15,7 @@ class UserForm(FlaskForm):
     bairro=StringField(label="bairro",validators=[DataRequired()])
     endereco =StringField(label="Endereço",validators=[DataRequired()])
     complemento=StringField(label="Complemento (opcional)")
-    cozinheiro = SelectField(label="Cozinheiro", validators=[DataRequired()], choices=[(1,'sim'),(0,'não')])
+    cozinheiro = SelectField(label="Cozinheiro", validators=[DataRequired()], choices=[('True', 'sim'), ('False', 'não')])
     submit = SubmitField()
 
 class AlterUserForm(FlaskForm):
@@ -23,6 +23,12 @@ class AlterUserForm(FlaskForm):
     username = StringField(label="Digite um username", validators=[length(min=3,max=30)])
     email = StringField(label="Digite seu email", validators=[length(min=3,max=60)])
     profile_pic = FileField(label="Insira sua foto",validators=[FileAllowed(['jpg', 'png','jpeg','webp'],message= 'Apenas arquivos jpg e png!')])
+    cozinheiro = SelectField(label="Cozinheiro", validators=[DataRequired()], choices=[('True', 'sim'), ('False', 'não')] )
+    cep = StringField(label="CEP",validators=[DataRequired()])
+    numero=StringField(label="n°",validators=[DataRequired()])
+    bairro=StringField(label="bairro",validators=[DataRequired()])
+    endereco =StringField(label="Endereço",validators=[DataRequired()])
+    complemento=StringField(label="Complemento (opcional)")
     submit = SubmitField()
 
 class AlterUserPasswordForm(FlaskForm):

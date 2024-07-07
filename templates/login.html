@@ -8,21 +8,22 @@
 <br>
 <h2 class="text-center">Login de Usuário</h2>
 <br>
-<form action="{{url_for('login')}}" method="post" class="container" data-bs-theme="dark">
-    <fieldset class="d-flex flex-column gap-2 shadow-sm p-3 mb-5 bg-body-tertiary rounded">
+<form action="{{url_for('login')}}" method="post" class="container border border-warning shadow p-3 rounded" >
+
         {{ form.csrf_token }}
+        <br>
         <div class="input-group mb-3">
-            {{form.username.label(class="text-light input-group-text")}}
+            {{form.username.label(class=" input-group-text")}}
             {{form.username(class="form-control")}}
 
         </div>
         <div class="input-group mb-3">
             
-            {{form.password.label(class="text-light input-group-text")}}
+            {{form.password.label(class=" input-group-text")}}
             {{form.password(class="form-control")}}
         </div>
-        <div class="d-grid gap-2 d-md-block text-center">
-            {{form.submit(value="Logar", class="btn btn-outline-light")}}
+        <div class="  d-md-block text-center bg-white">
+            {{form.submit(value="Logar", class="btn btn-warning")}}
 
         </div>
     </fieldset>

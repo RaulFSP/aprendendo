@@ -6,7 +6,7 @@
 
 {%block body%}
 <br>
-<div class="container p-3 d-flex bg-body-tertiary rounded justify-content-center flex-column">
+<div class="container p-3 d-flex bg-body-tertiary rounded justify-content-center flex-column border border-warning shadow">
     <div class="d-grid gap-2 d-md-block">
         <a href="{{url_for('index')}}" class="btn btn-dark">Voltar</a>
     </div>
@@ -19,10 +19,11 @@
     {%endif%}
     
     <hr>
-    <p class="">Nome: {{user.name}}</p>
-    <p class="">Nome de Usuário: {{user.username}}</p>
-    <p class="">Email: {{user.email}}</p>
-    <p class="">Data de Entrada: {{"{:0}/{}/{}".format(user.data_entrada.day,user.data_entrada.month,user.data_entrada.year)}}</p>
+    <p class="align-self-center">{{user.name}}</p>
+    <p class="align-self-center">{{user.username}}</p>
+    <p class="align-self-center">{{user.email}}</p>
+    <p class="align-self-center">Data de Entrada: {{"{:0}/{}/{}".format(user.data_entrada.day,user.data_entrada.month,user.data_entrada.year)}}</p>
+    <p class="align-self-center">{{"{} n°{} {} {}".format(endereco.cep,endereco.numero,endereco.bairro,endereco.endereco)}}</p>
     <hr>
     <div class="d-grid gap-2 d-md-block d-md-flex justify-content-evenly">
         <a href="{{url_for('alter_user',id=current_user.id)}}" class="btn btn-warning">Atualizar</a>
@@ -37,7 +38,7 @@
 <hr>
 
 {%if pratos%}
-<div class="container p-3 border d-flex bg-body-tertiary rounded justify-content-evenly gap-3">
+<div class="container p-3 border d-flex bg-body-tertiary rounded justify-content-evenly gap-3 border border-warning shadow">
 {%for prato in pratos%}
 {%if prato.poster.id == current_user.id%}
 <div class="card" style="width: 18rem;">

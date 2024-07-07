@@ -8,43 +8,43 @@
 <br>
 <h2 class="text-center">Adicionar Prato</h2>
 <br>
-<form action="{{url_for('add_post')}}" method="post" class="container shadow-sm p-3 mb-5 bg-body-tertiary rounded" data-bs-theme="dark" enctype="multipart/form-data">
+<form action="{{url_for('add_post')}}" method="post" class="container  p-3 mb-5 bg-body-tertiary border border-warning shadow rounded"  enctype="multipart/form-data">
     {{ form.csrf_token }}
         <div class="d-grid gap-2 d-md-block">
-            <a href="{{url_for('index')}}" class="btn btn-outline-light">Voltar</a>
+            <a href="{{url_for('index')}}" class="btn btn-dark">Voltar</a>
         </div>
         <br>
         
         <img src="{{url_for('static',filename='images/default_plate.jpg')}}" alt="" class="rounded img-thumbnail m-2" width="200px" height="200px" >
         
         <div class="input-group mb-3">
-            {{form.prato_pic.label(class="text-light input-group-text")}}
-            {{form.prato_pic(class="text-light form-control")}}
+            {{form.prato_pic.label(class=" input-group-text")}}
+            {{form.prato_pic(class=" form-control")}}
         </div>
         
         <div class="input-group mb-3">
-            {{form.name.label(class="text-light input-group-text")}}
+            {{form.name.label(class=" input-group-text")}}
             {{form.name(class="form-control")}}
 
         </div>
         <div class="input-group mb-3">
 
-            {{form.categoria.label(class="text-light input-group-text")}}
+            {{form.categoria.label(class=" input-group-text")}}
             {{form.categoria(class="form-select")}}
         </div>
         <div class="input-group mb-3">
-            {{form.content.label(class="text-light input-group-text")}}
+            {{form.content.label(class=" input-group-text")}}
             {{form.content(class="form-control",style="resize: none;")}}
             
         </div>
         <div class="input-group mb-3">
-            {{form.preco.label(class="text-light input-group-text")}}
+            {{form.preco.label(class=" input-group-text")}}
             {{form.preco(class="form-control")}}
 
         </div>
         
         <div class="d-grid gap-2 d-md-block text-center">
-            {{form.submit(value="Adicionar", class="btn btn-outline-light")}}
+            {{form.submit(value="Adicionar", class="btn btn-warning")}}
 
         </div>
 </form>

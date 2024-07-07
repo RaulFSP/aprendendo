@@ -13,8 +13,9 @@
     {%block head%} {%endblock%}
 </head>
 
-<body class="bg-secondary">
+<body >
     {%include "components/navbar.html"%}
+
     {% with messages = get_flashed_messages() %}
     {% if messages %}
     <br>
