@@ -22,9 +22,9 @@
             {{form.password.label(class=" input-group-text")}}
             {{form.password(class="form-control")}}
         </div>
-        <div class="  d-md-block text-center bg-white">
+        <div class="d-grid gap-2 d-md-block d-md-flex justify-content-evenly">
+            <a href="{{url_for('add_user')}}" class="btn btn-warning">Cadastrar-se</a>
             {{form.submit(value="Logar", class="btn btn-warning")}}
-
         </div>
     </fieldset>
 </form>

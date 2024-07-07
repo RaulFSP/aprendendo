@@ -1,0 +1,19 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resultado da Compra</title>
+</head>
+<body>
+    <h1>Valores de Qtd:</h1>
+    <ul>
+        {% for carrinho in carrinhos %}
+        <li>ID: {{ carrinho.id }}</li>
+      
+        <li>{{carrinho.id_cozinheiro}}</li>
+      
+        <hr>
+        {% endfor %}
+    </ul>
+</body>
+</html>

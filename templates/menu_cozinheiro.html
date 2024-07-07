@@ -12,8 +12,12 @@
         <a href="{{url_for('listar_usuarios')}}" class="btn btn-dark">Voltar</a> 
     </div>
     <br>
-    <p class="align-self-center">Data de Entrada: {{"{:0}/{}/{}".format(cozinheiro.data_entrada.day,cozinheiro.data_entrada.month,cozinheiro.data_entrada.year)}}</p>
-    <img src="{{url_for('static',filename='temp/'+cozinheiro.profile_pic)}}" class="align-self-center rounded img-thumbnail m-2" width="200px" height="200px">
+    <p class="align-self-center">Data de Entrada: {{ "{:02d}/{:02d}/{}".format(cozinheiro.data_entrada.day, cozinheiro.data_entrada.month, cozinheiro.data_entrada.year) }}</p>
+    {%if cozinheiro.profile_pic == None%}
+    <img src="{{url_for('static',filename='images/default_profile.png')}}" alt="" class="align-self-center rounded img-thumbnail m-2" width="200px" height="200px">
+    {%else%}
+    <img src="{{url_for('static',filename='temp/'+cozinheiro.profile_pic)}}" alt="" class="align-self-center rounded img-thumbnail m-2" width="200px" height="200px">
+    {%endif%}
     <p class="align-self-center">Nome: {{cozinheiro.name}}</p>
     <p class="align-self-center">Contato: {{cozinheiro.email}}</p>
     
@@ -26,6 +30,7 @@
 {%if pratos%}
 <div class="container d-flex  flex-wrap gap-3 justify-content-evenly">
 {%for prato in pratos%}
+<a href="{{url_for('adicionar_item',id=prato.id)}}" class="text-decoration-none">
 <div class="card border-warning shadow" style="width: 18rem;">
     {%if prato.prato_pic == None%}
     <img src="{{url_for('static',filename='images/default_plate.jpg')}}" class="card-img-top" width="150rem" height="180rem">
@@ -42,6 +47,7 @@
         <li class="list-group-item">{{"R$\t{:,.2f}".format(prato.preco)}}</li>
     </ul>
 </div>
+</a>
 {%endfor%}
 </div>
 {%else%}

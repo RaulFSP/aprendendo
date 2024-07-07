@@ -1,6 +1,6 @@
 from app import app,db, login_manager
-from flask import render_template, redirect, url_for, flash
-from models import UserModel, UserPostModel, UserEnderecoModel
+from flask import render_template, redirect, url_for, flash, request
+from models import UserModel, UserPostModel, UserEnderecoModel, CarrinhoModel, CompraModel
 from forms import UserForm, LoginForm, UserPostForm, SearchForm, AlterUserForm, AlterUserPasswordForm
 from flask_login import login_required, logout_user, current_user, login_user
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -293,3 +293,105 @@ def menu_cozinheiro(username):
     pratos = UserPostModel.query.filter(UserPostModel.user_id == cozinheiro.id).all()
     endereco = UserEnderecoModel.query.filter(UserEnderecoModel.user_id==cozinheiro.id).first_or_404()
     return render_template('menu_cozinheiro.html',cozinheiro=cozinheiro, pratos=pratos, endereco=endereco)
+
+
+@app.route('/adicionar/<int:id>')
+@login_required
+def adicionar_item(id):
+    prato = UserPostModel.query.get_or_404(id)
+    carrinho = CarrinhoModel(
+        id_cliente = current_user.id,
+        id_prato = prato.id,
+        id_cozinheiro = prato.poster.id,
+        prato_preco = prato.preco,
+        name_cliente = current_user.username
+    )
+    existe = CarrinhoModel.query.filter_by(id_prato=prato.id).first()
+    if not existe:
+        db.session.add(carrinho)
+        db.session.commit()
+        flash(f'{prato.name} foi adicionado!', category='primary')
+    else:
+        flash(f'{prato.name} já está na tabela!',category='danger')
+
+    return redirect(url_for('menu_cozinheiro', username=prato.poster.username))
+
+@app.route('/carrinho', methods=['POST','GET'])
+@login_required
+def carrinho():
+    carrinhos = CarrinhoModel.query.all()
+    if request.method == "POST":
+        ids = request.form.getlist('ids')
+        qtd_values = request.form.getlist('qtd')
+        
+        tudo = list(zip(ids, qtd_values))
+        print(ids, qtd_values) 
+        
+        for id, qtd in tudo:
+            carrinho = CarrinhoModel.query.get_or_404(id)
+            carrinho.qtd = qtd
+            carrinho.total = float(qtd) * float(carrinho.prato_preco)
+            db.session.commit()
+            compra = CompraModel(
+                id_cliente = carrinho.id_cliente,
+                id_prato = carrinho.id_prato,
+                id_cozinheiro = carrinho.id_cozinheiro,
+                prato_preco = carrinho.prato_preco,
+                qtd = carrinho.qtd,
+                total = carrinho.total,
+                name_cliente = carrinho.name_cliente
+            )
+            
+            db.session.add(compra)
+            db.session.commit()
+            db.session.delete(carrinho)
+            db.session.commit()
+            flash("Compra realizada")
+        return redirect(url_for('carrinho'))
+    
+    return render_template('carrinho.html', carrinhos=carrinhos)
+
+@app.route('/remover_item_carrinho/<int:id>', methods=['POST','GET'])
+@login_required
+def remover_item_carrinho(id):
+    carrinho = CarrinhoModel.query.get_or_404(id)
+    if carrinho != None:
+        db.session.delete(carrinho)
+        db.session.commit()
+        flash("Item removido")
+        return redirect(url_for('carrinho'))
+    else:
+        flash("Não há como deletar esse item")
+        return redirect(url_for('carrinho'))
+
+@app.route('/servicos/<username>', methods=['POST','GET'])
+@login_required
+def servicos(username):
+    pedidos = CompraModel.query.filter(CompraModel.id_cozinheiro==current_user.id).all()
+    return render_template('servicos.html',pedidos=pedidos)
+
+@app.route('/pedidos/<username>')
+@login_required
+def pedidos(username):
+    pedidos = CompraModel.query.filter(CompraModel.name_cliente==current_user.username).all()
+    return render_template('pedidos.html',pedidos=pedidos)
+
+@app.route('/entregar_pedido/<int:id>')
+@login_required
+def entregar_pedido(id):
+    pedido = CompraModel.query.get_or_404(id)
+    pedido.status = False
+    pedido.situacao = "pronto para entrega"
+    db.session.commit()
+    flash("Pedido entregue")
+    return redirect(url_for('servicos',username=current_user.username))
+
+@app.route('/cancelar_pedido/<int:id>')
+@login_required
+def cancelar_pedido(id):
+    pedido = CompraModel.query.get_or_404(id)
+    pedido.status = False
+    pedido.situacao = "cancelado"
+    db.session.commit()
+    flash("Pedido cancelado")
+    return redirect(url_for('servicos',username=current_user.username))

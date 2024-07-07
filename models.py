@@ -18,6 +18,7 @@ class UserModel(db.Model, UserMixin):
     data_entrada = mapped_column(DateTime,default=datetime.now())
     posts = relationship('UserPostModel', backref='poster')
     user_endereco = relationship('UserEnderecoModel', backref='user_endereco')
+    compra_model = relationship('CompraModel', backref='usuario')
 
 
 class UserEnderecoModel(db.Model):
@@ -40,6 +41,8 @@ class UserPostModel(db.Model):
     preco = mapped_column(Float,nullable=False)
     prato_pic = mapped_column(String(256), nullable=True)
     status = mapped_column(Boolean, unique=False, default=True)
+    carrinho = relationship('CarrinhoModel', backref='carrinho')
+    compra_model = relationship('CompraModel', backref='postagem')
     
 class CarrinhoModel(db.Model):
     __tablename__ = "carrinhomodel"
@@ -47,7 +50,22 @@ class CarrinhoModel(db.Model):
     id_cliente = mapped_column(Integer, ForeignKey('usermodel.id'))
     id_prato = mapped_column(Integer, ForeignKey('userpostmodel.id'))
     id_cozinheiro = mapped_column(Integer,nullable=False)
+    name_cliente = mapped_column(Text, nullable=True)
     prato_preco = mapped_column(Float,nullable=False)
-    qtd = mapped_column(Integer,nullable=False)
+    qtd = mapped_column(Integer,nullable=True)
+    total = mapped_column(Float, default=0.0, nullable=True)
+    
+    
+class CompraModel(db.Model):
+    __tablename__ = "compra_model"
+    id = mapped_column(Integer,autoincrement=True,primary_key=True)
+    id_cliente = mapped_column(Integer, ForeignKey('usermodel.id'))
+    id_prato = mapped_column(Integer, ForeignKey('userpostmodel.id'))
+    name_cliente = mapped_column(Text, nullable=True)
+    id_cozinheiro = mapped_column(Integer,nullable=False)
+    prato_preco = mapped_column(Float,nullable=False)
+    qtd = mapped_column(Integer,nullable=True)
     status = mapped_column(Boolean, unique=False, default=True)
+    total = mapped_column(Float, default=0.0, nullable=True)
     date_posted = mapped_column(DateTime,default=datetime.now())
+    situacao = mapped_column(Text,default="pendente")

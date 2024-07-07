@@ -6,6 +6,9 @@
 
 {%block body%}
 <br>
+<hr>
+<h2 class="text-center">Seu Cadastro</h2>
+<hr>
 <div class="container p-3 d-flex bg-body-tertiary rounded justify-content-center flex-column border border-warning shadow">
     <div class="d-grid gap-2 d-md-block">
         <a href="{{url_for('index')}}" class="btn btn-dark">Voltar</a>
@@ -36,7 +39,8 @@
     </div>
 </div>
 <hr>
-
+<h2 class="text-center">Seus Produtos</h2>
+<hr>
 {%if pratos%}
 <div class="container p-3 border d-flex bg-body-tertiary rounded justify-content-evenly gap-3 border border-warning shadow">
 {%for prato in pratos%}

@@ -1,0 +1,64 @@
+{%extends "base.html"%}
+{%block head%}
+<title>Carrinho</title>
+    {%endblock%}
+
+{%block body%}
+<br>
+
+<form action="{{url_for('carrinho')}}" method="post" class="container">
+    <div class="d-grid gap-2 d-md-block d-md-flex justify-content-evenly">
+
+        <a href="{{url_for('index')}}" class="btn btn-dark">Voltar</a>
+        <input type="submit" value="Comprar" class="btn btn-warning">
+    </div>
+    
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    <br>
+<table class="table container table-striped">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Remover</th>
+            <th>Nome</th>
+            <th>Categoria</th>
+            <th>Cozinheiro</th>
+            <th>Preço</th>
+            <th>Qtd</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for carrinho in carrinhos %}
+        <tr>
+            <td><input type="hidden" name="ids" value="{{ carrinho.id }}" readonly></td>
+            <td><a href="{{url_for('remover_item_carrinho',id=carrinho.id)}}" class="btn btn-danger">Remover</a></td>
+            <td>{{ carrinho.carrinho.name }}</td>
+            <td>{{ carrinho.carrinho.categoria }}</td>
+            <td>{{carrinho.carrinho.poster.username}}</td>
+            <td class="price">{{ carrinho.prato_preco }}</td>
+            <td>
+                <input type="number" min="1" max="99" name="qtd" value="1" class="quantity" data-id="{{ loop.index }}">
+            </td>
+            <td class="total">{{ carrinho.prato_preco }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</form>
+<script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const quantities = document.querySelectorAll('.quantity');
+        quantities.forEach(quantity => {
+            quantity.addEventListener('input', function () {
+                const row = this.closest('tr');
+                const price = parseFloat(row.querySelector('.price').innerText);
+                const qty = parseFloat(this.value);
+                const total = row.querySelector('.total');
+                total.innerText = (price * qty).toFixed(2);
+            });
+        });
+    });
+</script>
+{%endblock%}

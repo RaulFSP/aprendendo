@@ -21,7 +21,11 @@
     {%for cozinheiro in cozinheiros%}
     <a href="{{url_for('menu_cozinheiro',username=cozinheiro.username)}}" class="text-decoration-none">
     <div class="card border border-warning shadow" style="width: 18rem;">
-        <img src="{{url_for('static',filename='temp/'+cozinheiro.profile_pic)}}" class="card-img-top" alt="...">
+    {%if cozinheiro.profile_pic == None%}
+    <img src="{{url_for('static',filename='images/default_profile.png')}}" alt="" class="align-self-center rounded img-thumbnail m-2" width="200px" height="200px">
+    {%else%}
+    <img src="{{url_for('static',filename='temp/'+cozinheiro.profile_pic)}}" alt="" class="align-self-center rounded img-thumbnail m-2" width="200px" height="200px">
+    {%endif%}
         <div class="card-body">
             <h5 class="card-title">{{cozinheiro.username}}</h5>
 

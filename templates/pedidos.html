@@ -1,0 +1,30 @@
+{%extends "base.html"%}
+{%block head%}
+<title>Pedidos</title>
+{%endblock%}
+
+{%block body%}
+<br>
+<div class="container d-flex justify-content-evenly gap-2 flex-row-reverse">
+    {%for pedido in pedidos%}
+    <div class="card border-warning shadow" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">Pedido n°{{pedido.id}}</h5>
+            
+            {%if pedido.situacao == "pronto para entrega"%}
+            <h6 class="card-subtitle mb-2 text-body-secondary">Situação: <p class="text-success">{{pedido.situacao}}</p></h6>
+            {%elif pedido.situacao == "cancelado"%}
+            <h6 class="card-subtitle mb-2 text-body-secondary">Situação: <p class="text-danger">{{pedido.situacao}}</p></h6>
+            {%else%}
+            <h6 class="card-subtitle mb-2 text-body-secondary">Situação: <p class="text-warning">{{pedido.situacao}}</p></h6>
+            {%endif%}
+            <p class="card-text">{{"{:02d}/{:02d}/{}".format(pedido.date_posted.day,pedido.date_posted.month,pedido.date_posted.year)}}</p>
+            <p class="card-text">{{"{:02d}:{:02d}".format(pedido.date_posted.hour,pedido.date_posted.minute)}}</p>
+            <hr>
+            <h6 class="card-text">Itens</h6>
+            <p class="card-text">{{pedido.postagem.name}}</p>
+        </div>
+    </div>
+    {%endfor%}
+</div>
+{%endblock%}

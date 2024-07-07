@@ -1,0 +1,35 @@
+{%extends "base.html"%}
+{%block head%}
+<title>Pedidos</title>
+{%endblock%}
+
+{%block body%}
+<br>
+<div class="container">
+<table class="table">
+    <thead>
+        <tr>
+            <th>Cliente</th>
+            <th>Pedido</th>
+            <th>Quantidade</th>
+            <th>Data e Horário</th>
+            <th>Ação</th>
+        </tr>
+    </thead>
+    <tbody>
+        {%for pedido in pedidos if pedido.status == True%}
+        <tr>
+            <td>{{pedido.name_cliente}}</td>
+            <td>{{pedido.postagem.name}}</td>
+            <td>{{pedido.qtd}}</td>
+            <td>{{pedido.date_posted}}</td>
+            <td>
+                <a href="{{url_for('entregar_pedido',id=pedido.id)}}" class="btn btn-success">Entregar</a>
+                <a href="{{url_for('cancelar_pedido',id=pedido.id)}}" class="btn btn-danger">Cancelar</a>
+            </td>
+        </tr>
+        {%endfor%}
+    </tbody>
+</table>
+</div>
+{%endblock%}

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg" style="background-color: #fd7e14;">
+<nav class="navbar navbar-expand-lg" style="background-color: #EF6C00;">
     <div class="container-fluid">
         <a class="navbar-brand d-flex align-items-center" href="{{url_for('index')}}">
             <img src="{{url_for('static',filename='images/logo_192.png')}}" alt="Logo" width="35" height="35"
@@ -24,17 +24,26 @@
                     <a class="nav-link active" href="{{url_for('login')}}">Login</a>
                 </li>
                 {%else%}
+                {%if current_user.cozinheiro%}
                 <li class="nav-item">
                     <a class="nav-link active" href="{{url_for('add_post')}}">Adicionar Prato</a>
                 </li>
+                {%endif%}
                 <li class="nav-item">
                     <a class="nav-link active" href="{{url_for('dashboard_user')}}">Menu Usuário</a>
                 </li>
                 {%if current_user.cozinheiro%}
                 <li class="nav-item">
-                    <a class="nav-link active" href="{{url_for('dashboard_user')}}">Pedidos</a>
+                    <a class="nav-link active" href="{{url_for('servicos', username=current_user.username)}}">Serviços</a>
                 </li>
                 {%endif%}
+                
+                <li class="nav-item">
+                    <a class="nav-link active" href="{{url_for('carrinho')}}">Carrinho</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="{{url_for('pedidos', username=current_user.username)}}">Pedidos</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link active" href="{{url_for('logout')}}">Logout</a>
                 </li>

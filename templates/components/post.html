@@ -1,6 +1,7 @@
 {%if pratos%}
 <div class="container d-flex  flex-wrap gap-3 justify-content-evenly">
-{%for prato in pratos%}
+    {%for prato in pratos%}
+    <a href="{{url_for('adicionar_item',id=prato.id)}}" class="text-decoration-none">
 <div class="card border-warning shadow" style="width: 18rem;">
     {%if prato.prato_pic == None%}
     <img src="{{url_for('static',filename='images/default_plate.jpg')}}" class="card-img-top" width="150rem" height="180rem">
@@ -17,6 +18,7 @@
         <li class="list-group-item">{{"R$\t{:,.2f}".format(prato.preco)}}</li>
     </ul>
 </div>
+</a>
 {%endfor%}
 </div>
 {%else%}
