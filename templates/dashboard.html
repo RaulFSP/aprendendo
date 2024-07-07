@@ -6,27 +6,75 @@
 
 {%block body%}
 <br>
-<div class="container p-3 border d-flex bg-body-tertiary rounded flex-column" data-bs-theme="dark">
+<div class="container p-3 d-flex bg-body-tertiary rounded justify-content-center flex-column">
     <div class="d-grid gap-2 d-md-block">
-        <a href="{{url_for('index')}}" class="btn btn-outline-light">Voltar</a>
+        <a href="{{url_for('index')}}" class="btn btn-dark">Voltar</a>
     </div>
+    <br>
+    
+    {%if current_user.profile_pic == None%}
+    <img src="{{url_for('static',filename='images/default_profile.png')}}" alt="" class="align-self-center rounded img-thumbnail m-2" width="200px" height="200px">
+    {%else%}
+    <img src="{{url_for('static',filename='temp/'+current_user.profile_pic)}}" alt="" class="align-self-center rounded img-thumbnail m-2" width="200px" height="200px">
+    {%endif%}
+    
     <hr>
-    <div class="container-sm "style="overflow: hidden;">
-        {%if current_user.profile_pic == None%}
-        <img src="{{url_for('static',filename='images/default_profile.png')}}" alt="" class="rounded img-thumbnail" width="200px" height="200px">
+    <p class="">Nome: {{user.name}}</p>
+    <p class="">Nome de Usuário: {{user.username}}</p>
+    <p class="">Email: {{user.email}}</p>
+    <p class="">Data de Entrada: {{"{:0}/{}/{}".format(user.data_entrada.day,user.data_entrada.month,user.data_entrada.year)}}</p>
+    <hr>
+    <div class="d-grid gap-2 d-md-block d-md-flex justify-content-evenly">
+        <a href="{{url_for('alter_user',id=current_user.id)}}" class="btn btn-warning">Atualizar</a>
+        <a href="{{url_for('alter_user_password',id=current_user.id)}}" class="btn btn-warning">Alterar Senha</a>
+        {%if current_user.status%}
+        <a href="{{url_for('desativar_usuario')}}" class="btn btn-danger">Desativar Perfil</a>
         {%else%}
-        <img src="{{url_for('static',filename='temp/'+current_user.profile_pic)}}" alt="" class="rounded img-thumbnail" width="200px" height="200px">
+        <a href="{{url_for('ativar_usuario')}}" class="btn btn-warning">Ativar Perfil</a>
         {%endif%}
     </div>
-    <hr>
-    <p class="text-light">Nome: {{user.name}}</p>
-    <p class="text-light">Nome de Usuário: {{user.username}}</p>
-    <p class="text-light">Email: {{user.email}}</p>
-    <p class="text-light">Data de Entrada: {{"{:0}/{}/{}".format(user.data_entrada.day,user.data_entrada.month,user.data_entrada.year)}}</p>
-    <hr>
-    <div class="d-grid gap-2 d-md-block">
-        <a href="{{url_for('alter_user',id=current_user.id)}}" class="btn btn-outline-light">Atualizar</a>
-        <a href="{{url_for('alter_user_password',id=current_user.id)}}" class="btn btn-outline-light">Alterar Senha</a>
-    </div>
 </div>
+<hr>
+
+{%if pratos%}
+<div class="container p-3 border d-flex bg-body-tertiary rounded justify-content-evenly gap-3">
+{%for prato in pratos%}
+{%if prato.poster.id == current_user.id%}
+<div class="card" style="width: 18rem;">
+    
+    <div class="d-grid gap-2 d-md-block d-md-flex justify-content-evenly">
+
+    <a href="{{url_for('alter_post',id=prato.id)}}" class="btn btn-warning" style="width: 100%;">Alterar</a>
+    </div>    
+    
+    {%if prato.prato_pic == None%}
+        {%if prato.status%}
+        <img src="{{url_for('static',filename='images/default_plate.jpg')}}" class="card-img-top" width="150rem" height="180rem">
+        {%else%}
+        <img src="{{url_for('static',filename='images/default_plate.jpg')}}" class="card-img-top" width="150rem" height="180rem" style="filter: grayscale(100%);">
+        {%endif%}
+    
+    {%else%}
+        {%if prato.status%}
+        <img src="{{url_for('static',filename='temp/'+prato.prato_pic)}}" class="card-img-top" width="150rem" height="180rem">
+        {%else%}
+        <img src="{{url_for('static',filename='temp/'+prato.prato_pic)}}" class="card-img-top" width="150rem" height="180rem" style="filter: grayscale(100%);">
+        {%endif%}
+    {%endif%}
+    <div class="card-body " style="overflow: hidden;">
+        <h6 class="card-title">{{prato.name}}</h5>
+        <p class="card-text text-break">{{prato.content}}</p>
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">{{prato.categoria}}</li>
+        <li class="list-group-item">{{"R$\t{:,.2f}".format(prato.preco)}}</li>
+    </ul>
+</div>
+{%endif%}
+{%endfor%}
+</div>
+{%else%}
+<p class="text-center">Não há postagens</p>
+{%endif%}
+
 {%endblock%}

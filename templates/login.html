@@ -11,10 +11,16 @@
 <form action="{{url_for('login')}}" method="post" class="container" data-bs-theme="dark">
     <fieldset class="d-flex flex-column gap-2 shadow-sm p-3 mb-5 bg-body-tertiary rounded">
         {{ form.csrf_token }}
-        {{form.username.label(class="text-light")}}
-        {{form.username()}}
-        {{form.password.label(class="text-light")}}
-        {{form.password()}}
+        <div class="input-group mb-3">
+            {{form.username.label(class="text-light input-group-text")}}
+            {{form.username(class="form-control")}}
+
+        </div>
+        <div class="input-group mb-3">
+            
+            {{form.password.label(class="text-light input-group-text")}}
+            {{form.password(class="form-control")}}
+        </div>
         <div class="d-grid gap-2 d-md-block text-center">
             {{form.submit(value="Logar", class="btn btn-outline-light")}}
 

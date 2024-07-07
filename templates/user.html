@@ -8,44 +8,70 @@
 <br>
 <h2 class="text-center">Cadastrar Usuário</h2>
 <br>
-<form action="{{url_for('add_user')}}" method="post" class="container shadow-sm p-3 mb-5 bg-body-tertiary rounded" data-bs-theme="dark" enctype="multipart/form-data">
+<form action="{{url_for('add_user')}}" method="post" class="container shadow-sm p-3 mb-5 bg-body-tertiary rounded" enctype="multipart/form-data">
     
         {{ form.csrf_token }}
         <div class="d-grid gap-2 d-md-block">
-            <a href="{{url_for('index')}}" class="btn btn-outline-light">Voltar</a>
+            <a href="{{url_for('index')}}" class="btn btn-dark">Voltar</a>
         </div>
         <br>
         <img src="{{url_for('static',filename='images/default_profile.png')}}" alt="" class="rounded img-thumbnail m-2" width="200px" height="200px" >
         
         <div class="input-group mb-3">
-            {{form.profile_pic.label(class="text-light input-group-text")}}
-            {{form.profile_pic(class="text-light form-control")}}
+            {{form.profile_pic.label(class=" input-group-text")}}
+            {{form.profile_pic(class=" form-control")}}
         </div>
         
         <div class="input-group mb-3">
-            {{form.name.label(class="text-light input-group-text")}}
+            {{form.name.label(class=" input-group-text")}}
             {{form.name(class="form-control")}}
 
         </div>
         <div class="input-group mb-3">
 
-            {{form.username.label(class="text-light input-group-text")}}
+            {{form.username.label(class=" input-group-text")}}
             {{form.username(class="form-control")}}
         </div>
         <div class="input-group mb-3">
-            {{form.email.label(class="text-light input-group-text")}}
+            {{form.email.label(class=" input-group-text")}}
             {{form.email(class="form-control")}}
             
         </div>
         <div class="input-group mb-3">
-            {{form.password.label(class="text-light input-group-text")}}
+            {{form.password.label(class=" input-group-text")}}
             {{form.password(class="form-control")}}
 
         </div>
         <div class="input-group mb-3">
-            {{form.password_test.label(class="text-light input-group-text")}}
+            {{form.password_test.label(class=" input-group-text")}}
             {{form.password_test(class="form-control")}}
 
+        </div>
+        <hr>
+        <div class="input-group mb-3">
+            {{form.cozinheiro.label(class="input-group-text")}}
+            {{form.cozinheiro(class="form-select")}}
+        </div>
+        <hr>
+        <div class="input-group mb-3">
+            {{form.cep.label(class=" input-group-text")}}
+            {{form.cep(class="form-control")}}
+        </div>
+        <div class="input-group mb-3">
+            {{form.numero.label(class=" input-group-text")}}
+            {{form.numero(class="form-control")}}
+        </div>
+        <div class="input-group mb-3">
+            {{form.bairro.label(class=" input-group-text")}}
+            {{form.bairro(class="form-control")}}
+        </div>
+        <div class="input-group mb-3">
+            {{form.endereco.label(class=" input-group-text")}}
+            {{form.endereco(class="form-control")}}
+        </div>
+        <div class="input-group mb-3">
+            {{form.complemento.label(class=" input-group-text")}}
+            {{form.complemento(class="form-control")}}
         </div>
         <div class="d-grid gap-2 d-md-block text-center">
             {{form.submit(value="Cadastrar", class="btn btn-outline-light")}}

@@ -11,11 +11,24 @@ class UserModel(db.Model, UserMixin):
     username = mapped_column(String(30), nullable=False,unique=True)
     email = mapped_column(String(60), nullable=False, unique=True)
     password_hash = mapped_column(String(128), nullable=False)
-    profile_pic = mapped_column(String(256), nullable=False)
+    profile_pic = mapped_column(String(256), nullable=True)
     status = mapped_column(Boolean, unique=False,default=True)
     score = mapped_column(Float, default=0.0, nullable=False)
+    cozinheiro = mapped_column(Boolean, unique=False)
     data_entrada = mapped_column(DateTime,default=datetime.now())
     posts = relationship('UserPostModel', backref='poster')
+    user_endereco = relationship('UserEnderecoModel', backref='user_endereco')
+
+
+class UserEnderecoModel(db.Model):
+    __tablename__ = "user_endereco"
+    id = mapped_column(Integer, autoincrement=True, primary_key=True)
+    user_id = mapped_column(Integer, ForeignKey('usermodel.id'))
+    cep = mapped_column(Text, nullable=False)
+    numero = mapped_column(Text, nullable=False)
+    bairro  = mapped_column(Text, nullable=False)
+    endereco = mapped_column(Text, nullable=False)
+    complemento = mapped_column(Text, nullable=True)
 
 class UserPostModel(db.Model):
     __tablename__ = "userpostmodel"

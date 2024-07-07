@@ -1,50 +1,26 @@
 <div id="carouselExampleAutoplaying" class="carousel slide d-flex" data-bs-ride="carousel">
     <div class="carousel-inner position-relative p-3 rounded-3" style="height: 30em;">
-        
-        <div class="carousel-item h-100 active " data-bs-interval="3000" style="background-image: url(../static/temp/chefe_01.jpg ); background-size: contain; background-repeat: no-repeat; background-position: center;">
+        {%for cozinheiro in cozinheiros%}
+        <div class="carousel-item h-100 active " data-bs-interval="3000" style="overflow: hidden; position: relative">
+            {% if cozinheiro.profile_pic %}
+            <img src="{{ url_for('static', filename='temp/' + cozinheiro.profile_pic) }}" class="d-block w-100" alt="..." style="object-fit: contain; width: 100%;height: 100%;">
+            {% else %}
+            <img src="{{ url_for('static', filename='images/default_profile.png') }}" class="d-block w-100" alt="..." style="object-fit: contain; width: 100%;height: 100%;">
+            {% endif %}
             
+
             <div class="badge text-bg-warning text-wrap shadow p-3 m-2 rounded position-absolute top-0 start-50 translate-middle-x" style=" height: 3rem;">
-                Maria
+                {{cozinheiro.name}}
             </div>
             <div class="badge text-bg-warning text-wrap shadow p-3 m-2 rounded position-absolute bottom-0 start-50 translate-middle-x" style=" height: 3rem;">
                 <span class="rating">
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-half"></i>
-                    <i class="bi bi-star"></i>
-                    <i class="bi bi-star"></i>
+                    <i class="bi bi-star-fill">{{cozinheiro.score}}</i>
                 </span>
             </div>
         </div>
+        {%endfor%}
         
-        <div class="carousel-item h-100 active " data-bs-interval="3000" style="background-image: url(../static/temp/chefe_02.jpg ); background-size: contain; background-repeat: no-repeat; background-position: center;">
-            <div class="badge text-bg-warning text-wrap shadow p-3 m-2 rounded position-absolute top-0 start-50 translate-middle-x" style=" height: 3rem;">
-                Antonio
-            </div>
-            <div class="badge text-bg-warning text-wrap shadow p-3 m-2 rounded position-absolute bottom-0 start-50 translate-middle-x" style=" height: 3rem;">
-                <span class="rating">
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star"></i>
-                </span>
-            </div>
-        </div>
-        <div class="carousel-item h-100 active " data-bs-interval="3000" style="background-image: url(../static/temp/chefe_03.jpg ); background-size: contain; background-repeat: no-repeat; background-position: center;">
-            <div class="badge text-bg-warning text-wrap shadow p-3 m-2 rounded position-absolute top-0 start-50 translate-middle-x" style=" height: 3rem;">
-                Gonçalves
-            </div>
-            <div class="badge text-bg-warning text-wrap shadow p-3 m-2 rounded position-absolute bottom-0 start-50 translate-middle-x" style=" height: 3rem;">
-                <span class="rating">
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-half"></i>
-                </span>
-            </div>
-        </div>
+        
         
     </div>
     <button class="carousel-control-prev rounded-circle align-self-center" type="button" data-bs-target="#carouselExampleAutoplaying" style="background-color: #fd7e14; width: 60px; height: 60px; ";

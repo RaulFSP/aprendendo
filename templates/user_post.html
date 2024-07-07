@@ -30,11 +30,11 @@
         <div class="input-group mb-3">
 
             {{form.categoria.label(class="text-light input-group-text")}}
-            {{form.categoria(class="form-control")}}
+            {{form.categoria(class="form-select")}}
         </div>
         <div class="input-group mb-3">
             {{form.content.label(class="text-light input-group-text")}}
-            {{form.content(class="form-control")}}
+            {{form.content(class="form-control",style="resize: none;")}}
             
         </div>
         <div class="input-group mb-3">
@@ -44,7 +44,7 @@
         </div>
         
         <div class="d-grid gap-2 d-md-block text-center">
-            {{form.submit(value="Cadastrar", class="btn btn-outline-light")}}
+            {{form.submit(value="Adicionar", class="btn btn-outline-light")}}
 
         </div>
 </form>
